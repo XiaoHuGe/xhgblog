@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"xhgblog/controllers/admin"
 	"xhgblog/controllers/index"
+	"xhgblog/controllers/tag"
 	"xhgblog/controllers/user"
 	"xhgblog/middleware"
 	"xhgblog/utils/common"
@@ -39,6 +40,16 @@ func InitRouter() *gin.Engine {
 			authed.GET("user/me", user.UserMe)
 			authed.DELETE("user/logout", user.Logout)
 		}
+
+		// 获取标签列表
+		v1.GET("/tags", tag.GetTags)
+		// 新建标签
+		v1.POST("/tag", tag.AddTag)
+		// 修改标签
+		v1.PUT("/tag/:id", tag.EditTag)
+		// 删除标签
+		v1.DELETE("/tag/:id", tag.DeleteTag)
+
 	}
 	return r
 }

@@ -16,6 +16,15 @@ const (
 	ERROR_ENCRYPT         = 1104
 	ERROR_CREATE_SQL      = 1105
 	ERROR_EXIST_EMAIL     = 1106
+
+	ERROR_EXIST_TAG       = 2001
+	ERROR_EXIST_TAG_FAIL  = 2002
+	ERROR_NOT_EXIST_TAG   = 2003
+	ERROR_GET_TAGS_FAIL   = 2004
+	ERROR_COUNT_TAG_FAIL  = 2005
+	ERROR_ADD_TAG_FAIL    = 2006
+	ERROR_EDIT_TAG_FAIL   = 2007
+	ERROR_DELETE_TAG_FAIL = 2008
 )
 
 var MsgFlags = map[int]string{
@@ -34,6 +43,15 @@ var MsgFlags = map[int]string{
 	ERROR_ENCRYPT:         "密码加密失败",
 	ERROR_CREATE_SQL:      "数据库创建失败",
 	ERROR_EXIST_EMAIL:     "已存在该邮箱",
+
+	ERROR_EXIST_TAG:                 "已存在该标签名称",
+	ERROR_EXIST_TAG_FAIL:            "获取已存在标签失败",
+	ERROR_NOT_EXIST_TAG:             "该标签不存在",
+	ERROR_GET_TAGS_FAIL:             "获取所有标签失败",
+	ERROR_COUNT_TAG_FAIL:            "统计标签失败",
+	ERROR_ADD_TAG_FAIL:              "新增标签失败",
+	ERROR_EDIT_TAG_FAIL:             "修改标签失败",
+	ERROR_DELETE_TAG_FAIL:           "删除标签失败",
 }
 
 func GetMsg(code int) string {

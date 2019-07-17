@@ -13,12 +13,18 @@ var (
 )
 
 type App struct {
+	Application
 	Server
 	Database
 	Sessions
 }
 
 var AppSetting = &App{}
+
+type Application struct {
+	PageSize  int    `yaml:"PageSize"`
+	JwtSecret string `yaml:"JwtSecret"`
+}
 
 type Server struct {
 	RunMode      string        `yaml:"RunMode"`

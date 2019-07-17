@@ -42,6 +42,7 @@ func Setup() {
 	db.DB().SetMaxOpenConns(100)
 
 	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Tag{})
 }
 
 
