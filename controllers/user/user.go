@@ -1,6 +1,7 @@
 package user
 
 import (
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -11,12 +12,20 @@ import (
 	"xhgblog/utils/setting"
 )
 
+func RegisterHtml(ctx *gin.Context) {
+	ctx.HTML(http.StatusOK, "auth/signup.html", nil)
+}
+
+func LoginHtml(c *gin.Context) {
+	c.HTML(http.StatusOK, "auth/signin.html", nil)
+}
+
 func Register(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 
 	registerService := service.UserRegisterService{}
 	ctx.ShouldBind(&registerService)
-
+	fmt.Println(registerService)
 	resp := registerService.UserRegValidation()
 	if resp != nil {
 		G.Response(http.StatusOK, resp)
@@ -33,8 +42,10 @@ func Register(ctx *gin.Context) {
 	data := service.BuildUserResponse(user)
 	resp.Data = data
 	resp.Code = e.SUCCESS_REGISTER
-	resp.Msg = e.GetMsg(resp.Code)
+	resp.Message = e.GetMsg(resp.Code)
+	resp.Succeed = true
 	G.Response(http.StatusOK, resp)
+
 }
 
 func Login(ctx *gin.Context) {
@@ -60,11 +71,14 @@ func Login(ctx *gin.Context) {
 	s.Clear()
 	s.Set(setting.SessionUserId, user.ID) // ctx.Set("user_id", user.ID)
 	s.Save()
+	ctx.Redirect(http.StatusMovedPermanently, "admin/index")
 
-	resp = &app.Response{}
-	resp.Code = e.SUCCESS_LOGIN
-	resp.Msg = e.GetMsg(resp.Code)
-	G.Response(http.StatusOK, resp)
+	//resp = &app.Response{}
+	//resp.Code = e.SUCCESS_LOGIN
+	//resp.Message = e.GetMsg(resp.Code)
+	//resp.Succeed = true
+	//G.Response(http.StatusOK, resp)
+
 }
 
 func UserMe(ctx *gin.Context) {
@@ -76,7 +90,7 @@ func UserMe(ctx *gin.Context) {
 			data := service.BuildUserResponse(u)
 			resp.Data = data
 			resp.Code = e.SUCCESS_GETME
-			resp.Msg = e.GetMsg(resp.Code)
+			resp.Message = e.GetMsg(resp.Code)
 		}
 	}
 	G.Response(http.StatusOK, resp)
@@ -89,7 +103,7 @@ func Logout(ctx *gin.Context) {
 	s.Save()
 	resp := &app.Response{}
 	resp.Code = e.SUCCESS_LOGOUT
-	resp.Msg = e.GetMsg(resp.Code)
+	resp.Message = e.GetMsg(resp.Code)
 	G.Response(http.StatusOK, resp)
 
 }

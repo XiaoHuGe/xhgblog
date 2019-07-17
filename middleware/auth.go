@@ -38,7 +38,7 @@ func AuthRequired() gin.HandlerFunc {
 		}
 		G.Response(http.StatusOK, &app.Response{
 			Code: e.ERROR_NOT_LOGIN,
-			Msg:  e.GetMsg(e.ERROR_NOT_LOGIN),
+			Message:  e.GetMsg(e.ERROR_NOT_LOGIN),
 		})
 		cxt.Abort()
 	}

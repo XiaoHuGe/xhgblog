@@ -6,10 +6,11 @@ import (
 
 // Response 团队基础序列化器
 type Response struct {
-	Code  int         `json:"code"`
-	Data  interface{} `json:"data"`
-	Msg   interface{} `json:"msg"`
-	Error string      `json:"error"`
+	Code    int         `json:"code"`
+	Data    interface{} `json:"data"`
+	Message interface{} `json:"message"`
+	Error   string      `json:"error"`
+	Succeed bool        `json:"succeed"`
 }
 
 type Gin struct {

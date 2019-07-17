@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/validation"
 	"xhgblog/models"
 	"xhgblog/utils/app"
@@ -29,14 +30,16 @@ func (this *UserRegisterService) UserRegValidation() *app.Response {
 		}
 		return &app.Response{
 			Code: e.INVALID_PARAMS,
-			Msg:  msg,
+			Message:  msg,
 		}
 	}
 
+	fmt.Println("Password", this.Password)
+	fmt.Println("PasswordConfirm", this.PasswordConfirm)
 	if this.Password != this.PasswordConfirm {
 		return &app.Response{
 			Code: e.ERROR_PASSWORD_DIFFER,
-			Msg:  e.GetMsg(e.ERROR_PASSWORD_DIFFER),
+			Message:  e.GetMsg(e.ERROR_PASSWORD_DIFFER),
 		}
 	}
 
@@ -50,7 +53,7 @@ func (this *UserRegisterService) UserRegister() (*models.User, *app.Response) {
 	if err == nil && user.ID > 0 {
 		return user, &app.Response{
 			Code: e.ERROR_EXIST_EMAIL,
-			Msg:  e.GetMsg(e.ERROR_EXIST_EMAIL),
+			Message:  e.GetMsg(e.ERROR_EXIST_EMAIL),
 		}
 	}
 
@@ -63,7 +66,7 @@ func (this *UserRegisterService) UserRegister() (*models.User, *app.Response) {
 	if res != nil {
 		return user, &app.Response{
 			Code: e.ERROR_ENCRYPT,
-			Msg:  e.GetMsg(e.ERROR_ENCRYPT),
+			Message:  e.GetMsg(e.ERROR_ENCRYPT),
 		}
 	}
 
@@ -71,7 +74,7 @@ func (this *UserRegisterService) UserRegister() (*models.User, *app.Response) {
 	if err != nil {
 		return user, &app.Response{
 			Code: e.ERROR_CREATE_SQL,
-			Msg:  e.GetMsg(e.ERROR_CREATE_SQL),
+			Message:  e.GetMsg(e.ERROR_CREATE_SQL),
 		}
 	}
 

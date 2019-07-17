@@ -12,5 +12,6 @@ func main() {
 	models.Setup()
 
 	r := routers.InitRouter()
-	r.Run(fmt.Sprintf(":%d", setting.AppSetting.HttpPort)) // listen and serve on 0.0.0.0:8080
+
+	r.Run(fmt.Sprintf(":%d", setting.AppSetting.HttpPort))
 }

@@ -10,6 +10,14 @@
   version = "v1.12.0"
 
 [[projects]]
+  digest = "1:cc93dd54278f6c0dd4b43588b3cf2c07b09b2a6dd4e2617edf81aa8946054c1e"
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5f50d4fb4e0306dcacc6f8e9bea2dcee784dbbdf"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
   digest = "1:78516e6b3d7acda7f8763dc372c7bd9dafbf5714127a3879dc540ed5c51cb978"
   name = "github.com/gin-contrib/sessions"
@@ -187,6 +195,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/astaxie/beego/validation",
+    "github.com/gin-contrib/cors",
     "github.com/gin-contrib/sessions",
     "github.com/gin-contrib/sessions/cookie",
     "github.com/gin-gonic/gin",

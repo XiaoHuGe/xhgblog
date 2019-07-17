@@ -27,7 +27,7 @@ func (this *UserLoginService) UserLoginValidation() *app.Response {
 		}
 		return &app.Response{
 			Code: e.INVALID_PARAMS,
-			Msg:  msg,
+			Message:  msg,
 		}
 	}
 
@@ -41,7 +41,7 @@ func (this *UserLoginService) UserLogin() (models.User, *app.Response) {
 	if err != nil {
 		return *user, &app.Response{
 			Code: e.ERROR_ENAIL_OR_PASS,
-			Msg:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
+			Message:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
 		}
 	}
 
@@ -50,7 +50,7 @@ func (this *UserLoginService) UserLogin() (models.User, *app.Response) {
 	if err != nil {
 		return *user, &app.Response{
 			Code: e.ERROR_ENAIL_OR_PASS,
-			Msg:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
+			Message:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
 		}
 	}
 	return *user, nil
