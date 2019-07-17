@@ -1,0 +1,18 @@
+server:
+  RunMode: debug
+  #RunMode: release
+  #HttpPort: 8000
+  HttpPort: 9000
+  ReadTimeout: 60
+  WriteTimeout: 60
+
+sessions:
+  Secret: sdfmcxedsds
+
+database:
+  Type: mysql
+  User: root
+  Password: 123456
+  Host: 127.0.0.1:3306
+  Name: xhgblog
+  TablePrefix: xhgblog_
