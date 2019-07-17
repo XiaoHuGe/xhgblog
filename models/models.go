@@ -43,6 +43,7 @@ func Setup() {
 
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Tag{})
+	db.AutoMigrate(&Article{})
 }
 
 

@@ -1,4 +1,4 @@
-package tag
+package article
 
 import (
 	"github.com/Unknwon/com"
@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"xhgblog/service"
 	"xhgblog/utils/app"
-	//"xhgblog/utils/e"
 	"xhgblog/utils/setting"
 	"xhgblog/utils/util"
 )
@@ -16,60 +15,63 @@ type respData struct {
 	Total int         `json:"total"`
 }
 
-func GetTags(ctx *gin.Context) {
+func GetArticles(ctx *gin.Context) {
 	G := &app.Gin{C: ctx}
 	resp := &app.Response{}
 
-	// 标签名称
-	name := ctx.Query("name")
+	// 文章名称
+	var tagId int = -1
+	if arg := ctx.Query("tag_id"); arg != "" {
+		tagId = com.StrTo(arg).MustInt()
+	}
 
 	var state int = -1
 	if arg := ctx.Query("state"); arg != "" {
 		state = com.StrTo(arg).MustInt()
 	}
 
-	getTagService := service.GetTagService{
-		TagName:  name,
+	getArticleService := service.GetArticleService{
+		TagID:    tagId,
 		State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
-	tags, err := getTagService.GetAll()
+	articles, err := getArticleService.GetAll()
 	if err != nil {
-		resp.Message = "获取标签列表失败"
+		resp.Message = "获取文章列表失败"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
 
-	count, err := getTagService.Count()
+	count, err := getArticleService.Count()
 	if err != nil {
-		resp.Message = "获取标签数量失败"
+		resp.Message = "获取文章数量失败"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
 
 	rd := respData{}
-	rd.Lists = tags
+	rd.Lists = articles
 	rd.Total = count
 	resp.Data = rd
 	resp.Succeed = true
 	G.Response(http.StatusOK, resp)
 }
 
-func AddTag(ctx *gin.Context) {
+func AddArticle(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}
 
-	addTagService := service.AddTagService{}
-	err := ctx.ShouldBind(&addTagService)
+	addArticleService := service.AddArticleService{}
+	err := ctx.ShouldBind(&addArticleService)
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	err = addTagService.AddTag()
+	err = addArticleService.AddArticle()
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
@@ -82,27 +84,27 @@ func AddTag(ctx *gin.Context) {
 	G.Response(http.StatusOK, resp)
 }
 
-func EditTag(ctx *gin.Context) {
+func EditArticle(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}
-	
+
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckTagByID(id);
-	if b == false{
-		resp.Message = "没有此标签"  // 无效id
+	b, err := service.CheckArticleByID(id);
+	if b == false {
+		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	editTagService := service.EditTagService{}
-	err = ctx.ShouldBind(&editTagService)
+	editArcitleService := service.EditArcitleService{}
+	err = ctx.ShouldBind(&editArcitleService)
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	
-	err = editTagService.EdidTag(id)
+
+	err = editArcitleService.EditArcitle(id)
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
@@ -114,20 +116,20 @@ func EditTag(ctx *gin.Context) {
 	G.Response(http.StatusOK, resp)
 }
 
-func DeleteTag(ctx *gin.Context) {
+func DeleteArticle(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckTagByID(id);
-	if b == false{
-		resp.Message = "没有此标签"
+	b, err := service.CheckArticleByID(id);
+	if b == false {
+		resp.Message = "没有此文章"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
 
-	err = service.DeleteTag(id)
+	err = service.DeleteArticle(id)
 	if err != nil {
 		resp.Message = "删除失败，内部错误"
 		resp.Error = err.Error()

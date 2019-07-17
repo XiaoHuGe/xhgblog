@@ -67,7 +67,7 @@ func (this *EditTagService) EdidTag(id int) error {
 	return models.EditTag(id, tag)
 }
 
-func CheckID(id int) (bool, error) {
+func CheckTagByID(id int) (bool, error) {
 	return models.ExistTagByID(id)
 }
 

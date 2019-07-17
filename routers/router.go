@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"path/filepath"
 	"xhgblog/controllers/admin"
+	"xhgblog/controllers/article"
 	"xhgblog/controllers/index"
 	"xhgblog/controllers/tag"
 	"xhgblog/controllers/user"
@@ -49,6 +50,15 @@ func InitRouter() *gin.Engine {
 		v1.PUT("/tag/:id", tag.EditTag)
 		// 删除标签
 		v1.DELETE("/tag/:id", tag.DeleteTag)
+
+		// 获取文章列表
+		v1.GET("/articles", article.GetArticles)
+		// 新建文章
+		v1.POST("/article", article.AddArticle)
+		// 修改文章
+		v1.PUT("/article/:id", article.EditArticle)
+		// 删除文章
+		v1.DELETE("/article/:id", article.DeleteArticle)
 
 	}
 	return r

@@ -1,9 +1,8 @@
 package common
 
 import (
-	"strings"
 	"time"
-	"wblog/models"
+	//"wblog/models"
 )
 
 // 格式化时间
@@ -42,16 +41,20 @@ func Minus(a1, a2 int) int {
 	return a1 - a2
 }
 
+//type ListTag struct {
+//	Name string
+//}
+
 func ListTag() (tagstr string) {
-	tags, err := models.ListTag()
-	if err != nil {
-		return
-	}
-	tagNames := make([]string, 0)
-	for _, tag := range tags {
-		tagNames = append(tagNames, tag.Name)
-	}
-	tagstr = strings.Join(tagNames, ",")
+	//tags, err := models.ListTag()
+	//if err != nil {
+	//	return
+	//}
+	//tagNames := make([]string, 0)
+	//for _, tag := range tags {
+	//	tagNames = append(tagNames, tag.Name)
+	//}
+	//tagstr = strings.Join(tagNames, ",")
 	return
 }
 

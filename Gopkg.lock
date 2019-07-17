@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:b67d9fb93495f20c1650448395a35d8c8a05cc1744bdd9986f5bc69d5d114f22"
+  name = "github.com/Unknwon/com"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "41959bdd855fb7db467f78865d5f9044507df1cd"
+  version = "v2"
+
+[[projects]]
   digest = "1:6e8ddcf89b14452805846a0742d4a7e9c6ed060dac8abcec6c0344ff4d3d23dd"
   name = "github.com/astaxie/beego"
   packages = ["validation"]
@@ -194,6 +202,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/Unknwon/com",
     "github.com/astaxie/beego/validation",
     "github.com/gin-contrib/cors",
     "github.com/gin-contrib/sessions",
