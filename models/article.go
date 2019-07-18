@@ -4,14 +4,15 @@ import "github.com/jinzhu/gorm"
 
 type Article struct {
 	Model
-	TagID int `json:"tag_id" gorm:"index"`
+	TagID int   `json:"tag_id" gorm:"index"`
 	Tags  []Tag `json:"tags" gorm:"many2many:article_tag;"`
 
-	Title      string `json:"title"`
-	Desc       string `json:"desc"`
-	Content    string `json:"content"`
-	CreatedBy  string `json:"created_by"`
-	ModifiedBy string `json:"modified_by"`
+	Title       string `json:"title"`
+	Desc        string `json:"desc"`
+	Content     string `json:"content"`
+	IsPublished bool   `json:"is_published"` // published or not
+	CreatedBy   string `json:"created_by"`
+	ModifiedBy  string `json:"modified_by"`
 }
 
 func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {

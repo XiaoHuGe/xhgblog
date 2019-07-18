@@ -10,7 +10,7 @@ import (
 	"xhgblog/utils/util"
 )
 
-func IndexHtml(ctx *gin.Context) {
+func GetIndexHtml(ctx *gin.Context) {
 	// 文章名称
 	var tagId int = -1
 	if arg := ctx.Query("tag_id"); arg != "" {

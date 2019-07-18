@@ -29,7 +29,7 @@ func InitRouter() *gin.Engine {
 
 	v1 := r.Group("/")
 	{
-		v1.GET("/", index.IndexHtml)
+		v1.GET("/", index.GetIndexHtml)
 		v1.GET("register", user.RegisterHtml)
 		v1.POST("register", user.Register)
 		v1.GET("login", user.LoginHtml)
@@ -37,7 +37,10 @@ func InitRouter() *gin.Engine {
 		authed := v1.Group("/admin")
 		authed.Use(middleware.AuthRequired())
 		{
-			authed.GET("index", admin.AdminIndex)
+			authed.GET("index", admin.GetAdminIndexHtml)
+			authed.GET("article", admin.GetArticleHtml)
+			authed.GET("new_article", admin.AddArticleHtml)
+
 			authed.GET("user/me", user.UserMe)
 			authed.DELETE("user/logout", user.Logout)
 		}

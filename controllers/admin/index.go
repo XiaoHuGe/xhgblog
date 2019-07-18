@@ -1,17 +1,29 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"xhgblog/service"
 	"xhgblog/utils/setting"
 )
 
-func AdminIndex(ctx *gin.Context) {
+func GetAdminIndexHtml(ctx *gin.Context) {
+
+	getArticleService := &service.GetArticleService{}
+	postCount, _ := getArticleService.Count()
+
+	getTagService := &service.GetTagService{}
+	tagCount, _ := getTagService.Count()
 	user, _ := ctx.Get(setting.SessionUser)
+
+
+	fmt.Printf("postCount=%d, tagCount=%d \n", postCount, tagCount)
+
 	ctx.HTML(http.StatusOK, "admin/index.html", gin.H{
 		"pageCount":    5,
-		"postCount":    5,
-		"tagCount":     5,
+		"postCount":    postCount,
+		"tagCount":     tagCount,
 		"commentCount": 5,
 		"user":         user,
 	})
