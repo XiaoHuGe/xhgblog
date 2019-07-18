@@ -1,6 +1,9 @@
 package service
 
-import "xhgblog/models"
+import (
+	"fmt"
+	"xhgblog/models"
+)
 
 type GetArticleService struct {
 	TagID    int
@@ -26,7 +29,7 @@ func (this *GetArticleService) Count() (int, error) {
 }
 
 type AddArticleService struct {
-	TagID     int    `form:"tag_id" json:"tag_id"`
+	TagID     []int  `form:"tag_id" json:"tag_id"`
 	Title     string `form:"title" json:"title" binding:"required,min=2,max=30"`
 	Desc      string `form:"desc" json:"desc" binding:"required,min=2,max=100"`
 	Content   string `form:"content" json:"content" binding:"required,min=2,max=3000"`
@@ -34,8 +37,14 @@ type AddArticleService struct {
 }
 
 func (this *AddArticleService) AddArticle() (error) {
+	tags := []models.Tag{}
+	for _, tagId := range this.TagID {
+		tag, _ := models.GetTag(tagId)
+		tags = append(tags, tag)
+	}
 	article := models.Article{
-		TagID:     this.TagID,
+		//TagID:     this.TagID,
+		Tags:      tags,
 		Title:     this.Title,
 		Desc:      this.Desc,
 		Content:   this.Content,
@@ -44,23 +53,31 @@ func (this *AddArticleService) AddArticle() (error) {
 	return models.AddArticle(&article)
 }
 
-type EditArcitleService struct {  // 长度验证问题
-	TagID     int    `form:"tag_id" json:"tag_id"`
-	Title     string `form:"title" json:"title"`
-	Desc      string `form:"desc" json:"desc"`
-	Content   string `form:"content" json:"content"`
+type EditArcitleService struct {
+	// 长度验证问题
+	TagID      []int  `form:"tag_id" json:"tag_id"`
+	Title      string `form:"title" json:"title"`
+	Desc       string `form:"desc" json:"desc"`
+	Content    string `form:"content" json:"content"`
 	ModifiedBy string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=30"`
 }
 
-func (this *EditArcitleService)EditArcitle(id int) error {
+func (this *EditArcitleService) EditArcitle(id int) error {
+	tags := []models.Tag{}
+	for _, tagId := range this.TagID {
+		tag, _ := models.GetTag(tagId)
+		tags = append(tags, tag)
+	}
+	fmt.Println("tags:", tags)
 	article := models.Article{
-		TagID:     this.TagID,
-		Title:     this.Title,
-		Desc:      this.Desc,
-		Content:   this.Content,
+		//TagID:     this.TagID,
+		Tags:       tags,
+		Title:      this.Title,
+		Desc:       this.Desc,
+		Content:    this.Content,
 		ModifiedBy: this.ModifiedBy,
 	}
-	return models.EditArticle(id, article)
+	return models.EditArticle(id, &article)
 }
 
 func DeleteArticle(id int) error {
@@ -69,4 +86,8 @@ func DeleteArticle(id int) error {
 
 func CheckArticleByID(id int) (bool, error) {
 	return models.ExistArticleByID(id)
+}
+
+func GetArticle(id int) (*models.Article, error) {
+	return models.GetArticle(id)
 }

@@ -60,6 +60,35 @@ func GetArticles(ctx *gin.Context) {
 	G.Response(http.StatusOK, resp)
 }
 
+func GetArticle(ctx *gin.Context) {
+	G := app.Gin{C: ctx}
+	resp := &app.Response{}
+
+	id := com.StrTo(ctx.Param("id")).MustInt()
+	b, err := service.CheckArticleByID(id);
+	if b == false {
+		resp.Message = "没有此文章" // 无效id
+		resp.Error = err.Error()
+		G.Response(http.StatusOK, resp)
+		return
+	}
+	article, err := service.GetArticle(id)
+	if err != nil {
+		resp.Message = "获取文章失败"
+		resp.Error = err.Error()
+		G.Response(http.StatusOK, resp)
+		return
+	}
+	//resp.Data = article
+	//resp.Succeed = true
+	//G.Response(http.StatusOK, resp)
+	//article.Tag
+	ctx.HTML(http.StatusOK, "post/display.html", gin.H{
+		"post": article,
+		//"user": user,
+	})
+}
+
 func AddArticle(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}

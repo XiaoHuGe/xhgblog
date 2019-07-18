@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type Article struct {
 	Model
 	TagID int `json:"tag_id" gorm:"index"`
-	Tag   Tag `json:"tag"`
+	Tags  []Tag `json:"tags" gorm:"many2many:article_tag;"`
 
 	Title      string `json:"title"`
 	Desc       string `json:"desc"`
@@ -16,12 +16,26 @@ type Article struct {
 
 func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
 	var articles []*Article
-	err := db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	//var tags []Tag
+	err := db.Preload("Tags").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-
 	return articles, nil
+}
+
+// 获取单个文章
+func GetArticle(id int) (*Article, error) {
+	var article Article
+	err := db.Where("id = ?", id).First(&article).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	err = db.Model(&article).Related(&article.Tags).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return &article, nil
 }
 
 func DeleteArticle(id int) (error) {
@@ -32,8 +46,8 @@ func DeleteArticle(id int) (error) {
 	return nil
 }
 
-func EditArticle(id int, data interface{}) (error) {
-	err := db.Model(&Article{}).Where("id = ?", id).Update(data).Error
+func EditArticle(id int, article *Article) (error) {
+	err := db.Model(&Article{}).Where("id = ? ", id).Update(article).Error
 	if err != nil {
 		return err
 	}

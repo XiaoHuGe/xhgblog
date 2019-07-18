@@ -53,6 +53,8 @@ func InitRouter() *gin.Engine {
 
 		// 获取文章列表
 		v1.GET("/articles", article.GetArticles)
+		// 获取指定文章
+		v1.GET("/article/:id", article.GetArticle)
 		// 新建文章
 		v1.POST("/article", article.AddArticle)
 		// 修改文章

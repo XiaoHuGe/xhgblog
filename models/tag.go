@@ -27,6 +27,15 @@ func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) 
 	return tags, nil
 }
 
+func GetTag(id int) (Tag, error) {
+	var tag Tag
+	err := db.Where("id = ? ", id).Find(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return tag, err
+	}
+	return tag, nil
+}
+
 func DeleteTag(id int) (error) {
 	err := db.Where("id = ?", id).Delete(&Tag{}).Error
 	if err != nil {

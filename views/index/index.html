@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{/*<!-- {{template "meta.html"}} -->*/}}
 
-    <title>Blog Home - 王松雁</title>
+    <title>Blog Home - 小虎哥</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/static/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,7 @@
             <!-- First Blog Post -->
             {{range $postkey,$postvalue:=.posts}}
                 <div class="articleInfo">
-                    <span><a class="articleTitle" href="/post/{{$postvalue.ID}}">
+                    <span><a class="articleTitle" href="/article/{{$postvalue.ID}}">
                         {{$length := len $postvalue.Title}}
                         {{if ge $length 40}}
                             {{truncate $postvalue.Title 40}}...
@@ -58,25 +58,26 @@
                         {{end}}
                     </a></span>
                     <span class="createdTime" style="margin-right: 10px;">
-                        {{dateFormat $postvalue.CreatedAt "06-01-02 15:04"}}
+                        {{dateFormat $postvalue.CreatedAt "2006-01-02 15:04"}}
                     </span>
                 </div>
             <div class="articleBody">
-                {{$length := len $postvalue.Body}}
+                {{$length := len $postvalue.Content}}
                 {{if ge $length 100}}
-                    {{truncate $postvalue.Body 100}}...
+                    {{truncate $postvalue.Content 100}}...
                 {{else}}
-                    {{$postvalue.Body}}
+                    {{$postvalue.Content}}
                 {{end}}
                 </div>
 
+                <!-- 虎删除 -->
                 <!-- article tags -->
                 <div style="margin-top: 10px">
                     <tr>
                         {{range $tagkey,$tagvalue:=$postvalue.Tags}}
                         <a href="/tag/{{$tagvalue.ID}}" class="changeTag"
                            style="color: #888888;text-decoration: none;">
-                            # <span>{{$tagvalue.Name}}</span>&nbsp;&nbsp;
+                            # <span>{{$tagvalue.TagName}}</span>&nbsp;&nbsp;
                         </a>
                         {{end}}
                     </tr>
@@ -138,9 +139,11 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
+                            <!-- 虎删除 -->
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isEven $tagkey}}
-                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>
+                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>*/}}
+                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{5}})</a>
                             </li>
                             {{end}}
                             {{end}}
@@ -149,9 +152,11 @@
                     <!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
+                            <!-- 虎删除 -->
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isOdd $tagkey}}
-                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>
+                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>*/}}
+                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{10}})</a>
                             </li>
                             {{end}}
                             {{end}}
@@ -168,23 +173,25 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            {{range $archivekey,$archivevalue:=.archives}}
-                            {{if isEven $archivekey}}
-                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
-                            </li>
-                            {{end}}
-                            {{end}}
+                            <!-- 虎删除 -->
+                            {{/*{{range $archivekey,$archivevalue:=.archives}}*/}}
+                            {{/*{{if isEven $archivekey}}*/}}
+                            {{/*<li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>*/}}
+                            {{/*</li>*/}}
+                            {{/*{{end}}*/}}
+                            {{/*{{end}}*/}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            {{range $archivekey,$archivevalue:=.archives}}
-                            {{if isOdd $archivekey}}
-                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
-                            </li>
-                            {{end}}
-                            {{end}}
+                            <!-- 虎删除 -->
+                            {{/*{{range $archivekey,$archivevalue:=.archives}}*/}}
+                            {{/*{{if isOdd $archivekey}}*/}}
+                            {{/*<li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>*/}}
+                            {{/*</li>*/}}
+                            {{/*{{end}}*/}}
+                            {{/*{{end}}*/}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->
@@ -197,9 +204,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="list-unstyled">
-                        {{range $key,$post:=.maxReadPosts}}
-                            <li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.View}})</a></li>
-                        {{end}}
+                        <!-- 虎删除 -->
+                        {{/*{{range $key,$post:=.maxReadPosts}}*/}}
+                            {{/*<li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.View}})</a></li>*/}}
+                        {{/*{{end}}*/}}
                         </ul>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -212,9 +220,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="list-unstyled">
-                        {{range $key,$post:=.maxCommentPosts}}
-                            <li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.CommentTotal}})</a></li>
-                        {{end}}
+                        <!-- 虎删除 -->
+                        {{/*{{range $key,$post:=.maxCommentPosts}}*/}}
+                            {{/*<li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.CommentTotal}})</a></li>*/}}
+                        {{/*{{end}}*/}}
                         </ul>
                     </div>
                     <!-- /.col-lg-12 -->
@@ -227,10 +236,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="list-unstyled">
-                            {{range .links}}
-                            <li><a href="/link/{{.ID}}" target="_blank" title="{{.Url}}">{{.Name}}</a>
-                            </li>
-                           {{end}}
+                            <!-- 虎删除 -->
+                            {{/*{{range .links}}*/}}
+                            {{/*<li><a href="/link/{{.ID}}" target="_blank" title="{{.Url}}">{{.Name}}</a>*/}}
+                            {{/*</li>*/}}
+                           {{/*{{end}}*/}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->
