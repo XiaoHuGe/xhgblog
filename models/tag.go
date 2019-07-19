@@ -6,9 +6,9 @@ import (
 
 type Tag struct {
 	Model
-	TagName    string `json:"tag_name"`
-	CreatedBy  string `json:"created_by"`
-	ModifiedBy string `json:"modified_by"`
+	TagName    string //`json:"tag_name"`
+	//CreatedBy  string `json:"created_by"`
+	//ModifiedBy string `json:"modified_by"`
 }
 
 func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) {
@@ -30,6 +30,15 @@ func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) 
 func GetTag(id int) (Tag, error) {
 	var tag Tag
 	err := db.Where("id = ? ", id).Find(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return tag, err
+	}
+	return tag, nil
+}
+
+func GetTagByName(name string) (Tag, error) {
+	var tag Tag
+	err := db.Where("tag_name = ? ", name).Find(&tag).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return tag, err
 	}

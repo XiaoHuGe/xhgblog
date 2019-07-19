@@ -2,6 +2,8 @@ package service
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"xhgblog/models"
 )
 
@@ -29,37 +31,48 @@ func (this *GetArticleService) Count() (int, error) {
 }
 
 type AddArticleService struct {
-	TagID     []int  `form:"tag_id" json:"tag_id"`
-	Title     string `form:"title" json:"title" binding:"required,min=2,max=30"`
-	Desc      string `form:"desc" json:"desc" binding:"required,min=2,max=100"`
-	Content   string `form:"content" json:"content" binding:"required,min=2,max=3000"`
-	CreatedBy string `form:"created_by" json:"created_by" binding:"required,min=2,max=30"`
+	TagName     []string `form:"tag_name" json:"tag_name"`
+	Tags        string   `form:"tags" json:"tags"`
+	Title       string   `form:"title" json:"title" binding:"required,min=2,max=30"`
+	Desc        string   `form:"desc" json:"desc"` // binding:"required,min=2,max=100"
+	Content     string   `form:"content" json:"content" binding:"required,min=2,max=3000"`
+	CreatedBy   string   `form:"created_by" json:"created_by"` // binding:"required,min=2,max=30"
+	IsPublished string   `form:"is_published"`                 //json:"is_published"`
 }
 
 func (this *AddArticleService) AddArticle() (error) {
 	tags := []models.Tag{}
-	for _, tagId := range this.TagID {
-		tag, _ := models.GetTag(tagId)
-		tags = append(tags, tag)
+	if len(this.Tags) > 0 {
+		tagArr := strings.Split(this.Tags, ",")
+		for _, tag := range tagArr {
+			tagId, _ := strconv.ParseUint(tag, 10, 64)
+			tag, _ := models.GetTag(int(tagId))
+			tags = append(tags, tag)
+		}
 	}
+
+	fmt.Println("isPublished :", this.IsPublished)
+	published := "on" == this.IsPublished
 	article := models.Article{
 		//TagID:     this.TagID,
-		Tags:      tags,
-		Title:     this.Title,
-		Desc:      this.Desc,
-		Content:   this.Content,
-		CreatedBy: this.CreatedBy,
+		Tags:        tags,
+		Title:       this.Title,
+		Desc:        this.Desc,
+		Content:     this.Content,
+		CreatedBy:   this.CreatedBy,
+		IsPublished: published,
 	}
 	return models.AddArticle(&article)
 }
 
 type EditArcitleService struct {
 	// 长度验证问题
-	TagID      []int  `form:"tag_id" json:"tag_id"`
-	Title      string `form:"title" json:"title"`
-	Desc       string `form:"desc" json:"desc"`
-	Content    string `form:"content" json:"content"`
-	ModifiedBy string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=30"`
+	TagID       []int  `form:"tag_id" json:"tag_id"`
+	Title       string `form:"title" json:"title"`
+	Desc        string `form:"desc" json:"desc"`
+	Content     string `form:"content" json:"content"`
+	ModifiedBy  string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=30"`
+	IsPublished string `form:"is_published"` //json:"is_published"`
 }
 
 func (this *EditArcitleService) EditArcitle(id int) error {
@@ -84,7 +97,7 @@ func DeleteArticle(id int) error {
 	return models.DeleteArticle(id)
 }
 
-func CheckArticleByID(id int) (bool, error) {
+func CheckArticleByID(id int) (models.Article, error) {
 	return models.ExistArticleByID(id)
 }
 

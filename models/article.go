@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type Article struct {
 	Model
 	TagID int   `json:"tag_id" gorm:"index"`
-	Tags  []Tag `json:"tags" gorm:"many2many:article_tag;"`
+	Tags  []Tag `json:"tags" gorm:"many2many:article_tag;"` //table article_tags
 
 	Title       string `json:"title"`
 	Desc        string `json:"desc"`
@@ -14,6 +14,13 @@ type Article struct {
 	CreatedBy   string `json:"created_by"`
 	ModifiedBy  string `json:"modified_by"`
 }
+
+// table article_tags
+//type ArticleTag struct {
+//	Model
+//	ArticleId uint // Article id
+//	TagId     uint // tag id
+//}
 
 func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
 	var articles []*Article
@@ -72,10 +79,11 @@ func GetArticleTotal(maps interface{}) (int, error) {
 	return count, nil
 }
 
-func ExistArticleByID(id int) (bool, error) {
-	err := db.Where("id = ? ", id).First(&Article{}).Error
+func ExistArticleByID(id int) (Article, error) {
+	var article Article
+	err := db.Where("id = ? ", id).First(&article).Error
 	if err != nil && err == gorm.ErrRecordNotFound { // 错误不为空且为未找到时返回false
-		return false, err
+		return article, err
 	}
-	return true, nil
+	return article, nil
 }

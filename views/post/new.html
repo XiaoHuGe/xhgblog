@@ -110,10 +110,11 @@
                 mode: "inline",
                 type: "text",
                 pk: 1,
-                url: "/admin/new_tag",
+                url: "/admin/tag",
                 placeholder: "add a tag",
                 success: function (tag) {
-                    createButton(tag.data.ID, tag.data.Name);
+
+                    createButton(tag.data.id, tag.data.TagName);
                 },
                 error: function (e) {
                     console.log(e);
@@ -165,12 +166,12 @@
         </span><br/><br/>
 
         <!-- create or update a article -->
-        <form action="/admin/new_post" method="post" id="postForm" class="form-group">
+        <form action="/admin/new_article" method="post" id="postForm" class="form-group">
             <input id="tags" name="tags" type="hidden">
             <input name="title" type="text" class="form-control" placeholder="Title"/><br/>
-            <textarea id="demo" name="body"></textarea><br/>
+            <textarea id="demo" name="content"></textarea><br/>
             <div class="bootstrap-switch-small">
-                <input id="switchbtn" name="isPublished" type="checkbox"/>
+                <input id="switchbtn" name="is_published" type="checkbox"/>
             </div>
         </form>
     </div>

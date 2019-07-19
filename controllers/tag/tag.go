@@ -21,16 +21,16 @@ func GetTags(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	// 标签名称
-	name := ctx.Query("name")
+	name := ctx.Query("tag_name")
 
-	var state int = -1
-	if arg := ctx.Query("state"); arg != "" {
-		state = com.StrTo(arg).MustInt()
-	}
+	//var state int = -1
+	//if arg := ctx.Query("state"); arg != "" {
+	//	state = com.StrTo(arg).MustInt()
+	//}
 
 	getTagService := service.GetTagService{
 		TagName:  name,
-		State:    state,
+		//State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
@@ -69,7 +69,7 @@ func AddTag(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	err = addTagService.AddTag()
+	_, err = addTagService.AddTag()
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)

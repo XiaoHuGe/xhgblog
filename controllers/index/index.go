@@ -43,7 +43,7 @@ func GetIndexHtml(ctx *gin.Context) {
 
 	getTagService := service.GetTagService{
 		TagName:  "",
-		State:    state,
+		//State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}

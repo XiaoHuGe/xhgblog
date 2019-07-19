@@ -82,8 +82,8 @@
                                 </td>
                                 <td>{{dateFormat .CreatedAt "2006-01-02 15:04"}}</td>
                                 <td>{{dateFormat .UpdatedAt "2006-01-02 15:04"}}</td>
-                                <td><a href="/admin/post/{{.ID}}/edit" target="_blank" class="btn btn-primary">编辑</a>
-                                    <a href="#" class="btn btn-danger" data-href="/admin/post/{{.ID}}/delete" data-toggle="modal" data-target="#confirm-delete">删除</a>
+                                <td><a href="/admin/article/{{.ID}}/edit" target="_blank" class="btn btn-primary">编辑</a>
+                                    <a href="#" class="btn btn-danger" data-href="/admin/article/{{.ID}}/delete" data-toggle="modal" data-target="#confirm-delete">删除</a>
                                 </td>
                             </tr>
                             {{end}}
@@ -155,7 +155,7 @@
 
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').click(function(){
-            $.post($(e.relatedTarget).data('href'),{},function(reuslt){
+            $.post($(e.relatedTarget).data('href'),{},function(reuslt){ //post -> delete
                 window.location.href = window.location.href;
             },'json');
 

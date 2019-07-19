@@ -118,8 +118,8 @@ func EditArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckArticleByID(id);
-	if b == false {
+	_, err := service.CheckArticleByID(id);
+	if err != nil {
 		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
