@@ -38,6 +38,8 @@ func InitRouter() *gin.Engine {
 		authed.Use(middleware.AuthRequired())
 		{
 			authed.GET("index", admin.GetAdminIndexHtml)
+
+			//文章crud
 			authed.GET("article", admin.ManageArticleHtml)
 			authed.GET("new_article", admin.GetAddArticleHtml)
 			authed.POST("new_article", admin.AddArticle)

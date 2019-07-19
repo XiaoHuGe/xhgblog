@@ -9,18 +9,11 @@ type Article struct {
 
 	Title       string `json:"title"`
 	Desc        string `json:"desc"`
-	Content     string `json:"content"`
+	Content     string `json:"content" gorm:"size:3000"`
 	IsPublished bool   `json:"is_published"` // published or not
 	CreatedBy   string `json:"created_by"`
 	ModifiedBy  string `json:"modified_by"`
 }
-
-// table article_tags
-//type ArticleTag struct {
-//	Model
-//	ArticleId uint // Article id
-//	TagId     uint // tag id
-//}
 
 func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
 	var articles []*Article
@@ -35,11 +28,12 @@ func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error
 // 获取单个文章
 func GetArticle(id int) (*Article, error) {
 	var article Article
-	err := db.Where("id = ?", id).First(&article).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
-	}
-	err = db.Model(&article).Related(&article.Tags).Error
+	//err := db.Where("id = ?", id).First(&article).Error
+	//if err != nil && err != gorm.ErrRecordNotFound {
+	//	return nil, err
+	//}
+	//err = db.Model(&article).Related(&article.Tags).Error
+	err := db.Preload("Tags").Where("id = ? ", id).First(&article).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
@@ -55,10 +49,13 @@ func DeleteArticle(id int) (error) {
 }
 
 func EditArticle(id int, article *Article) (error) {
-	err := db.Model(&Article{}).Where("id = ? ", id).Update(article).Error
+	var arti Article
+	err := db.Model(&arti).Where("id = ? ", id).Update(article).Error
 	if err != nil {
 		return err
 	}
+	db.Model(&arti).Association("Tags").Replace(article.Tags)
+
 	return nil
 }
 
@@ -79,11 +76,11 @@ func GetArticleTotal(maps interface{}) (int, error) {
 	return count, nil
 }
 
-func ExistArticleByID(id int) (Article, error) {
+func ExistArticleByID(id int) (bool, error) {
 	var article Article
 	err := db.Where("id = ? ", id).First(&article).Error
 	if err != nil && err == gorm.ErrRecordNotFound { // 错误不为空且为未找到时返回false
-		return article, err
+		return false, err
 	}
-	return article, nil
+	return true, nil
 }

@@ -1,10 +1,10 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"wblog/models"
 	"xhgblog/service"
 	"xhgblog/utils/app"
 	"xhgblog/utils/setting"
@@ -63,7 +63,7 @@ func AddArticle(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	ctx.Redirect(http.StatusMovedPermanently, "article")
+	ctx.Redirect(http.StatusMovedPermanently, "/admin/article")
 }
 
 func DeleteArticle(ctx *gin.Context) {
@@ -71,8 +71,8 @@ func DeleteArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckArticleByID(id);
-	if b == false {
+	_, err := service.CheckArticleByID(id);
+	if err != nil {
 		resp.Message = "没有此文章"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
@@ -97,13 +97,22 @@ func EditArticleHtml(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	article, err := service.CheckArticleByID(id);
-	if err != nil {
+	b, err := service.CheckArticleByID(id);
+	if b == false {
 		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
 	}
+
+	article, err := service.GetArticle(id)
+	if err != nil {
+		resp.Message = "获取文章失败" // 无效id
+		resp.Error = err.Error()
+		G.Response(http.StatusOK, resp)
+		return
+	}
+	fmt.Println("article tags:", article.Tags)
 	//article.Tags, _ = models.ListTagByPostId(id)  // 获取
 	ctx.HTML(http.StatusOK, "post/modify.html", gin.H{
 		"post": article,
@@ -115,15 +124,8 @@ func EditArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	_, err := service.CheckArticleByID(id);
-	if err != nil {
-		resp.Message = "没有此文章" // 无效id
-		resp.Error = err.Error()
-		G.Response(http.StatusOK, resp)
-		return
-	}
 	editArcitleService := service.EditArcitleService{}
-	err = ctx.ShouldBind(&editArcitleService)
+	err := ctx.ShouldBind(&editArcitleService)
 	if err != nil {
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
@@ -137,7 +139,5 @@ func EditArticle(ctx *gin.Context) {
 		return
 	}
 
-	resp.Succeed = true
-	resp.Message = "修改成功"
-	G.Response(http.StatusOK, resp)
+	ctx.Redirect(http.StatusMovedPermanently, "/admin/article")
 }

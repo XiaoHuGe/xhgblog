@@ -62,42 +62,61 @@ func (this *AddArticleService) AddArticle() (error) {
 		CreatedBy:   this.CreatedBy,
 		IsPublished: published,
 	}
+	fmt.Println("add tags:", tags)
 	return models.AddArticle(&article)
 }
 
 type EditArcitleService struct {
 	// 长度验证问题
 	TagID       []int  `form:"tag_id" json:"tag_id"`
+	Tags        string `form:"tags" json:"tags"`
 	Title       string `form:"title" json:"title"`
 	Desc        string `form:"desc" json:"desc"`
 	Content     string `form:"content" json:"content"`
-	ModifiedBy  string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=30"`
-	IsPublished string `form:"is_published"` //json:"is_published"`
+	ModifiedBy  string `form:"modified_by" json:"modified_by"` //binding:"required,min=2,max=30"
+	IsPublished string `form:"is_published"`                   //json:"is_published"`
 }
 
 func (this *EditArcitleService) EditArcitle(id int) error {
-	tags := []models.Tag{}
-	for _, tagId := range this.TagID {
-		tag, _ := models.GetTag(tagId)
-		tags = append(tags, tag)
-	}
-	fmt.Println("tags:", tags)
+
 	article := models.Article{
 		//TagID:     this.TagID,
-		Tags:       tags,
+		//Tags:       tags,  // update不更新tags
 		Title:      this.Title,
 		Desc:       this.Desc,
 		Content:    this.Content,
 		ModifiedBy: this.ModifiedBy,
 	}
-	return models.EditArticle(id, &article)
+	err := models.EditArticle(id, &article)
+	if err != nil {
+		return err
+	}
+	// 此处逻辑待优化
+	// 先删除文章下所有关联标签
+	err = models.DeleteTagsByArticleId(id)
+	if err != nil {
+		return err
+	}
+
+	// 重新添加关联
+	if len(this.Tags) > 0 {
+		tagArr := strings.Split(this.Tags, ",")
+		for _, tag := range tagArr {
+			tagId, _ := strconv.ParseUint(tag, 10, 64)
+			err := models.AddArticleJoinTags(id, int(tagId))
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }
 
 func DeleteArticle(id int) error {
 	return models.DeleteArticle(id)
 }
 
-func CheckArticleByID(id int) (models.Article, error) {
+func CheckArticleByID(id int) (bool, error) {
 	return models.ExistArticleByID(id)
 }
 
