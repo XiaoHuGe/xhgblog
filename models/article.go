@@ -5,7 +5,7 @@ import "github.com/jinzhu/gorm"
 type Article struct {
 	Model
 	TagID int   `json:"tag_id" gorm:"index"`
-	Tags  []Tag `json:"tags" gorm:"many2many:article_tag;"` //table article_tags
+	Tags  []Tag `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
 
 	Title       string `json:"title"`
 	Desc        string `json:"desc"`

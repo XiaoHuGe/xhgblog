@@ -56,13 +56,16 @@ func GetIndexHtml(ctx *gin.Context) {
 	if count % setting.AppSetting.PageSize > 0 {
 		totalPage = count / setting.AppSetting.PageSize + 1
 	}
+
+	user, _ := ctx.Get(setting.SessionUser)
+
 	fmt.Printf("%d--%d--%d", count, totalPage, util.GetPage(ctx))
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
 		"archives":       "",
 		"links":           "",
-		"user":            "",
+		"user":            user,
 		"pageIndex":       com.StrTo(ctx.Query("page")).MustInt(),
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,

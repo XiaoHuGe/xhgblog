@@ -18,6 +18,7 @@ func AddTag(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
+
 	tag, err := addTagService.AddTag()
 	if err != nil {
 		resp.Error = err.Error()

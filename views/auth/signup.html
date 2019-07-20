@@ -81,7 +81,7 @@
                 Google+</a>
         </div>-->
 
-        <a href="/login" class="text-center">已有账号</a>
+        <a href="/user/login" class="text-center">已有账号</a>
     </div>
     <!-- /.form-box -->
 </div>
@@ -118,7 +118,7 @@
         $('#signupForm').ajaxForm(function(data) {
             if(data.succeed){
                 alert("注册成功");
-                window.location.href = "/login"
+                window.location.href = "/user/login"
             }else{
                 $("#msg").text(data.message);
                 $("#msg").addClass("text-danger");

@@ -12,27 +12,27 @@ import (
 
 // 获取登录用户
 func CurrentUser() gin.HandlerFunc {
-	return func(cxt *gin.Context) {
-		session := sessions.Default(cxt)
+	return func(ctx *gin.Context) {
+		session := sessions.Default(ctx)
 		uid := session.Get(setting.SessionUserId)
 		if uid != nil {
 			user, err := models.GetUser(uid)
 			if err == nil {
-				cxt.Set(setting.SessionUser, &user)
+				ctx.Set(setting.SessionUser, &user)
 			}
 		}
-		cxt.Next()
+		ctx.Next()
 	}
 }
 
 // 需要登录
 func AuthRequired() gin.HandlerFunc {
-	return func(cxt *gin.Context) {
-		G := app.Gin{C: cxt}
+	return func(ctx *gin.Context) {
+		G := app.Gin{C: ctx}
 
-		if user, _ := cxt.Get(setting.SessionUser); user != nil {
+		if user, _ := ctx.Get(setting.SessionUser); user != nil {
 			if _, ok := user.(*models.User); ok {
-				cxt.Next()
+				ctx.Next()
 				return
 			}
 		}
@@ -40,6 +40,7 @@ func AuthRequired() gin.HandlerFunc {
 			Code: e.ERROR_NOT_LOGIN,
 			Message:  e.GetMsg(e.ERROR_NOT_LOGIN),
 		})
-		cxt.Abort()
+		//ctx.Redirect(http.StatusMovedPermanently, "/login")
+		ctx.Abort()
 	}
 }

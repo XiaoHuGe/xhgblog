@@ -85,3 +85,12 @@ func ExistTagByID(id int) (bool, error) {
 	}
 	return true, nil
 }
+
+func ExistTagByName(name string) (*Tag, error) {
+	var tag Tag
+	err := db.Where("tag_name = ? ", name).First(&tag).Error
+	if err != nil && err == gorm.ErrRecordNotFound  {
+		return nil, err
+	}
+	return &tag, nil
+}

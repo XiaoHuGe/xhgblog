@@ -71,7 +71,7 @@ func Login(ctx *gin.Context) {
 	s.Clear()
 	s.Set(setting.SessionUserId, user.ID) // ctx.Set("user_id", user.ID)
 	s.Save()
-	ctx.Redirect(http.StatusMovedPermanently, "admin/index")
+	ctx.Redirect(http.StatusMovedPermanently, "/admin/index")
 
 	//resp = &app.Response{}
 	//resp.Code = e.SUCCESS_LOGIN
@@ -97,13 +97,14 @@ func UserMe(ctx *gin.Context) {
 }
 
 func Logout(ctx *gin.Context) {
-	G := app.Gin{C: ctx}
+	//G := app.Gin{C: ctx}
 	s := sessions.Default(ctx)
 	s.Clear()
 	s.Save()
-	resp := &app.Response{}
-	resp.Code = e.SUCCESS_LOGOUT
-	resp.Message = e.GetMsg(resp.Code)
-	G.Response(http.StatusOK, resp)
+	//resp := &app.Response{}
+	//resp.Code = e.SUCCESS_LOGOUT
+	//resp.Message = e.GetMsg(resp.Code)
+	//G.Response(http.StatusOK, resp)
+	ctx.Redirect(http.StatusSeeOther, "/user/login")
 
 }

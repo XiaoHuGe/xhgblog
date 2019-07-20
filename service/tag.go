@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"xhgblog/models"
 )
 
@@ -43,11 +44,18 @@ type AddTagService struct {
 }
 
 func (this *AddTagService) AddTag() (*models.Tag ,error) {
-	tag := &models.Tag{
+
+	tag,err := models.ExistTagByName(this.TagName)
+	if err == nil {
+		fmt.Println("存在此标签")
+		return tag, nil
+	}
+
+	tag = &models.Tag{
 		TagName:   this.TagName,
 		//CreatedBy: this.CreatedBy,
 	}
-	err := models.AddTag(tag)
+	err = models.AddTag(tag)
 	if err != nil {
 		return nil,err
 	}

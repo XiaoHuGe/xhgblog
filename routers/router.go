@@ -7,7 +7,6 @@ import (
 	"xhgblog/controllers/admin"
 	"xhgblog/controllers/article"
 	"xhgblog/controllers/index"
-	"xhgblog/controllers/tag"
 	"xhgblog/controllers/user"
 	"xhgblog/middleware"
 	"xhgblog/utils/common"
@@ -30,50 +29,59 @@ func InitRouter() *gin.Engine {
 	v1 := r.Group("/")
 	{
 		v1.GET("/", index.GetIndexHtml)
-		v1.GET("register", user.RegisterHtml)
-		v1.POST("register", user.Register)
-		v1.GET("login", user.LoginHtml)
-		v1.POST("login", user.Login)
-		authed := v1.Group("/admin")
-		authed.Use(middleware.AuthRequired())
-		{
-			authed.GET("index", admin.GetAdminIndexHtml)
-
-			//文章crud
-			authed.GET("article", admin.ManageArticleHtml)
-			authed.GET("new_article", admin.GetAddArticleHtml)
-			authed.POST("new_article", admin.AddArticle)
-			authed.POST("article/:id/delete", admin.DeleteArticle)
-			authed.GET("article/:id/edit", admin.EditArticleHtml)
-			authed.POST("article/:id/edit", admin.EditArticle)
-
-			authed.POST("tag", admin.AddTag)
-
-			authed.GET("user/me", user.UserMe)
-			authed.DELETE("user/logout", user.Logout)
-		}
-
-		// 获取标签列表
-		v1.GET("/tags", tag.GetTags)
-		// 新建标签
-		v1.POST("/tag", tag.AddTag)
-		// 修改标签
-		v1.PUT("/tag/:id", tag.EditTag)
-		// 删除标签
-		v1.DELETE("/tag/:id", tag.DeleteTag)
-
-		// 获取文章列表
-		v1.GET("/articles", article.GetArticles)
-		// 获取指定文章
+		v1.GET("/index", index.GetIndexHtml)
 		v1.GET("/article/:id", article.GetArticle)
-		// 新建文章
-		v1.POST("/article", article.AddArticle)
-		// 修改文章
-		v1.PUT("/article/:id", article.EditArticle)
-		// 删除文章
-		v1.DELETE("/article/:id", article.DeleteArticle)
-
 	}
+
+	us := r.Group("/user")
+	{
+		//v1.GET("/", index.GetIndexHtml)
+		us.GET("register", user.RegisterHtml)
+		us.POST("register", user.Register)
+		us.GET("login", user.LoginHtml)
+		us.POST("login", user.Login)
+		us.GET("logout", user.Logout)
+	}
+
+	authed := v1.Group("/admin")
+	authed.Use(middleware.AuthRequired())
+	{
+		authed.GET("index", admin.GetAdminIndexHtml)
+
+		//文章crud
+		authed.GET("article", admin.ManageArticleHtml)
+		authed.GET("new_article", admin.GetAddArticleHtml)
+		authed.POST("new_article", admin.AddArticle)
+		authed.POST("article/:id/delete", admin.DeleteArticle)
+		authed.GET("article/:id/edit", admin.EditArticleHtml)
+		authed.POST("article/:id/edit", admin.EditArticle)
+
+		authed.POST("tag", admin.AddTag)
+
+		authed.GET("user/me", user.UserMe)
+		//authed.GET("user/logout", user.Logout)
+	}
+
+	//// 获取标签列表
+	//v1.GET("/tags", tag.GetTags)
+	//// 新建标签
+	//v1.POST("/tag", tag.AddTag)
+	//// 修改标签
+	//v1.PUT("/tag/:id", tag.EditTag)
+	//// 删除标签
+	//v1.DELETE("/tag/:id", tag.DeleteTag)
+	//
+	//// 获取文章列表
+	//v1.GET("/articles", article.GetArticles)
+	//// 获取指定文章
+	//v1.GET("/article/:id", article.GetArticle)
+	//// 新建文章
+	//v1.POST("/article", article.AddArticle)
+	//// 修改文章
+	//v1.PUT("/article/:id", article.EditArticle)
+	//// 删除文章
+	//v1.DELETE("/article/:id", article.DeleteArticle)
+
 	return r
 }
 
