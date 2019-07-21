@@ -109,14 +109,13 @@
                 <!-- display article info -->
                 <div>
                     <!-- show tags -->
-                    <!-- 虎删除 -->
-                    {{/*<tr th:each="tag : ${article.tags}">*/}}
-                        {{/*{{range $key,$value := .post.Tags}}*/}}
-                        {{/*<a href="/tag/{{$value.ID}}" class="btn btn-default btn-sm">*/}}
-                            {{/*<span class="glyphicon glyphicon-tag"></span><span th:text="' ' + ${tag.name}"> {{$value.Name}}</span>*/}}
-                        {{/*</a>*/}}
-                        {{/*{{end}}*/}}
-                    {{/*</tr><!-- show tags -->*/}}
+                    <tr th:each="tag : ${article.tags}">
+                        {{range $key,$value := .post.Tags}}
+                        <a href="/articles/{{$value.ID}}" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-tag"></span><span th:text="' ' + ${tag.name}"> {{$value.TagName}}</span>
+                        </a>
+                        {{end}}
+                    </tr><!-- show tags -->
 
                     <!-- display article created time -->
                     <span class="createdTime">

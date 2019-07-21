@@ -6,15 +6,14 @@ import (
 
 type Tag struct {
 	Model
-	TagName    string //`json:"tag_name"`
-	//CreatedBy  string `json:"created_by"`
-	//ModifiedBy string `json:"modified_by"`
+	TagName string //`json:"tag_name"`
+	Total   int    // article num
 }
 
 func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) {
 	var (
 		tags []Tag
-		err error
+		err  error
 	)
 	if pageNum > 0 && pageSize > 0 {
 		err = db.Where(maps).Find(&tags).Offset(pageNum).Limit(pageSize).Error
@@ -45,7 +44,7 @@ func GetTagByName(name string) (Tag, error) {
 	return tag, nil
 }
 
-func DeleteTag(id int) (error) {
+func DeleteTag(id int) error {
 	err := db.Where("id = ?", id).Delete(&Tag{}).Error
 	if err != nil {
 		return err
@@ -53,7 +52,7 @@ func DeleteTag(id int) (error) {
 	return nil
 }
 
-func EditTag(id int, data interface{}) (error) {
+func EditTag(id int, data interface{}) error {
 	err := db.Model(&Tag{}).Where("id = ?", id).Update(data).Error
 	if err != nil {
 		return err
@@ -61,7 +60,7 @@ func EditTag(id int, data interface{}) (error) {
 	return nil
 }
 
-func AddTag(tag *Tag) (error) {
+func AddTag(tag *Tag) error {
 	err := db.Create(tag).Error
 	if err != nil {
 		return err
@@ -89,7 +88,7 @@ func ExistTagByID(id int) (bool, error) {
 func ExistTagByName(name string) (*Tag, error) {
 	var tag Tag
 	err := db.Where("tag_name = ? ", name).First(&tag).Error
-	if err != nil && err == gorm.ErrRecordNotFound  {
+	if err != nil && err == gorm.ErrRecordNotFound {
 		return nil, err
 	}
 	return &tag, nil

@@ -16,11 +16,11 @@ func ManageArticleHtml(ctx *gin.Context) {
 	resp := &app.Response{}
 	// 文章名称
 	var tagId = -1
-	var state = -1
+	//var state = -1
 
 	getArticleService := service.GetArticleService{
-		TagID:    tagId,
-		State:    state,
+		TagID: tagId,
+		//State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
@@ -71,7 +71,7 @@ func DeleteArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	_, err := service.CheckArticleByID(id);
+	_, err := service.CheckArticleByID(id)
 	if err != nil {
 		resp.Message = "没有此文章"
 		resp.Error = err.Error()
@@ -97,7 +97,7 @@ func EditArticleHtml(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckArticleByID(id);
+	b, err := service.CheckArticleByID(id)
 	if b == false {
 		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()

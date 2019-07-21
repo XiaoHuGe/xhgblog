@@ -31,6 +31,7 @@ func InitRouter() *gin.Engine {
 		v1.GET("/", index.GetIndexHtml)
 		v1.GET("/index", index.GetIndexHtml)
 		v1.GET("/article/:id", article.GetArticle)
+		v1.GET("/articles/:tag_id", index.GetIndexByTagHtml)
 	}
 
 	us := r.Group("/user")

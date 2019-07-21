@@ -9,14 +9,13 @@ import (
 )
 
 func GetAdminIndexHtml(ctx *gin.Context) {
+	user, _ := ctx.Get(setting.SessionUser)
 
 	getArticleService := &service.GetArticleService{}
 	postCount, _ := getArticleService.Count()
 
 	getTagService := &service.GetTagService{}
 	tagCount, _ := getTagService.Count()
-	user, _ := ctx.Get(setting.SessionUser)
-
 
 	fmt.Printf("postCount=%d, tagCount=%d \n", postCount, tagCount)
 

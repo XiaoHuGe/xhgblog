@@ -5,8 +5,8 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
-	"xhgblog/utils/setting"
 	"time"
+	"xhgblog/utils/setting"
 )
 
 var db *gorm.DB
@@ -46,6 +46,3 @@ func Setup() {
 	db.AutoMigrate(&Tag{})
 	db.AutoMigrate(&Article{})
 }
-
-
-

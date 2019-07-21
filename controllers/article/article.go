@@ -25,14 +25,14 @@ func GetArticles(ctx *gin.Context) {
 		tagId = com.StrTo(arg).MustInt()
 	}
 
-	var state int = -1
-	if arg := ctx.Query("state"); arg != "" {
-		state = com.StrTo(arg).MustInt()
-	}
+	//var state int = -1
+	//if arg := ctx.Query("state"); arg != "" {
+	//	state = com.StrTo(arg).MustInt()
+	//}
 
 	getArticleService := service.GetArticleService{
-		TagID:    tagId,
-		State:    state,
+		TagID: tagId,
+		//State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
@@ -65,7 +65,7 @@ func GetArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckArticleByID(id);
+	b, err := service.CheckArticleByID(id)
 	if b == false {
 		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()
@@ -118,7 +118,7 @@ func EditArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	_, err := service.CheckArticleByID(id);
+	_, err := service.CheckArticleByID(id)
 	if err != nil {
 		resp.Message = "没有此文章" // 无效id
 		resp.Error = err.Error()
@@ -150,7 +150,7 @@ func DeleteArticle(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	b, err := service.CheckArticleByID(id);
+	b, err := service.CheckArticleByID(id)
 	if b == false {
 		resp.Message = "没有此文章"
 		resp.Error = err.Error()

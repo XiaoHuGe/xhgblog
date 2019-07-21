@@ -141,8 +141,8 @@
                             <!-- 虎删除 -->
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isEven $tagkey}}
-                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>*/}}
-                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{5}})</a>
+                            <li><a href="/articles/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>
+                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{5}})</a>*/}}
                             </li>
                             {{end}}
                             {{end}}
@@ -155,7 +155,7 @@
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isOdd $tagkey}}
                             {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>*/}}
-                            <li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{10}})</a>
+                            <li><a href="/articles/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>
                             </li>
                             {{end}}
                             {{end}}

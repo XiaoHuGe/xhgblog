@@ -7,7 +7,7 @@ type ArticleTags struct {
 	TagId     int `json:"tag_id"`     // tag id
 }
 
-func DeleteTagsByArticleId(id int) (error) {
+func DeleteTagsByArticleId(id int) error {
 	err := db.Where("article_id = ?", id).Delete(&ArticleTags{}).Error
 	if err != nil {
 		return err
@@ -15,10 +15,19 @@ func DeleteTagsByArticleId(id int) (error) {
 	return nil
 }
 
-func AddArticleJoinTags(article_id, tag_id int) (error) {
+func AddArticleJoinTags(articleId, tagId int) error {
 	err := db.Create(ArticleTags{
-		ArticleId: article_id,
-		TagId:     tag_id,
+		ArticleId: articleId,
+		TagId:     tagId,
 	}).Error
 	return err
+}
+
+func GetArticleTagsByTagId(tagId int) ([]*ArticleTags, error) {
+	var articleTags []*ArticleTags
+	err := db.Where("tag_id = ?", tagId).Find(&articleTags).Error
+	if err != nil {
+		return nil, err
+	}
+	return articleTags, nil
 }

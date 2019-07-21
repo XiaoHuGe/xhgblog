@@ -1,27 +1,28 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Article struct {
 	Model
-	TagID int   `json:"tag_id" gorm:"index"`
-	Tags  []Tag `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
-
+	//TagID int   `json:"tag_id" gorm:"index"`
+	Tags        []Tag  `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
 	Title       string `json:"title"`
-	Desc        string `json:"desc"`
 	Content     string `json:"content" gorm:"size:3000"`
 	IsPublished bool   `json:"is_published"` // published or not
 	CreatedBy   string `json:"created_by"`
 	ModifiedBy  string `json:"modified_by"`
 }
 
-func GetArticles(pageNum int, pageSize int, maps interface{}) ([]*Article, error) {
+func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
-	//var tags []Tag
-	err := db.Preload("Tags").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	//fmt.Println("model tagId:", tagId)
+	err := db.Preload("Tags").Offset(pageNum).Limit(pageSize).Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
+	//db.Where("tags.tag_id = ?", tagId).Find(&articles)
 	return articles, nil
 }
 
@@ -40,7 +41,7 @@ func GetArticle(id int) (*Article, error) {
 	return &article, nil
 }
 
-func DeleteArticle(id int) (error) {
+func DeleteArticle(id int) error {
 	err := db.Where("id = ?", id).Delete(&Article{}).Error
 	if err != nil {
 		return err
@@ -48,7 +49,7 @@ func DeleteArticle(id int) (error) {
 	return nil
 }
 
-func EditArticle(id int, article *Article) (error) {
+func EditArticle(id int, article *Article) error {
 	var arti Article
 	err := db.Model(&arti).Where("id = ? ", id).Update(article).Error
 	if err != nil {
@@ -59,7 +60,7 @@ func EditArticle(id int, article *Article) (error) {
 	return nil
 }
 
-func AddArticle(article *Article) (error) {
+func AddArticle(article *Article) error {
 	err := db.Create(article).Error
 	if err != nil {
 		return err

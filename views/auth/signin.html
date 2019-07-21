@@ -41,7 +41,7 @@
         <p class="login-box-msg text-danger">{{.message}}</p>
         {{end}}
 
-        <form action="" method="post">
+        <form id="signinForm" action="" method="post">
             <div class="form-group has-feedback">
                 <input type="email" name="email" class="form-control" placeholder="邮箱">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -95,6 +95,21 @@
             increaseArea: '20%' // optional
         });
     });
+
+    // $(document).ready(function() {
+    //     // bind 'myForm' and provide a simple callback function
+    //     $('#signinForm').ajaxForm(function(data) {
+    //         if(data.succeed){
+    //             alert("登录成功");
+    //             // window.location.href = "/user/login"
+    //         }else{
+    //             alert("登录失败");
+    //             $("#msg").text(data.message);
+    //             $("#msg").addClass("text-danger");
+    //         }
+    //     });
+    // });
+
 </script>
 </body>
 </html>

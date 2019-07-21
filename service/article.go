@@ -9,24 +9,56 @@ import (
 
 type GetArticleService struct {
 	TagID    int
-	State    int
 	PageNum  int
 	PageSize int
 }
 
 func (this *GetArticleService) GetAll() ([]*models.Article, error) {
-	maps := make(map[string]interface{})
+	//maps := make(map[string]interface{})
+	//
+	//if this.State != -1 {
+	//	maps["state"] = this.State
+	//}
+	//if this.TagID != -1 {
+	//	maps["tag_id"] = this.TagID
+	//}
+	fmt.Println("ser tag_id:", this.TagID)
+	return models.GetArticles(this.TagID, this.PageNum, this.PageSize)
+}
 
-	if this.State != -1 {
-		maps["state"] = this.State
+func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article, err error) {
+	fmt.Println("ser tag_id:", this.TagID)
+
+	articleTags, err := models.GetArticleTagsByTagId(this.TagID)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
-	if this.TagID != -1 {
-		maps["tag_id"] = this.TagID
+	for _, articleTag := range articleTags {
+		article, err := models.GetArticle(articleTag.ArticleId)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		articles = append(articles, article)
 	}
-	return models.GetArticles(this.PageNum, this.PageSize, maps)
+	//article, err := models.GetArticle(articleTags.ArticleId)
+	//if err != nil {
+	//	fmt.Println(err)
+	//	return
+	//}
+
+	//articles = append(articles, article)
+
+	return articles, nil
 }
 
 func (this *GetArticleService) Count() (int, error) {
+	maps := make(map[string]interface{})
+
+	if this.TagID != -1 {
+		maps["tag_id"] = this.TagID
+	}
 	return models.GetArticleTotal(make(map[string]interface{}))
 }
 
@@ -40,13 +72,16 @@ type AddArticleService struct {
 	IsPublished string   `form:"is_published"`                 //json:"is_published"`
 }
 
-func (this *AddArticleService) AddArticle() (error) {
+func (this *AddArticleService) AddArticle() error {
 	tags := []models.Tag{}
 	if len(this.Tags) > 0 {
 		tagArr := strings.Split(this.Tags, ",")
 		for _, tag := range tagArr {
 			tagId, _ := strconv.ParseUint(tag, 10, 64)
 			tag, _ := models.GetTag(int(tagId))
+			// 标签文章个数
+			tag.Total += 1
+			models.EditTag(int(tag.ID), tag)
 			tags = append(tags, tag)
 		}
 	}
@@ -55,15 +90,19 @@ func (this *AddArticleService) AddArticle() (error) {
 	published := "on" == this.IsPublished
 	article := models.Article{
 		//TagID:     this.TagID,
-		Tags:        tags,
-		Title:       this.Title,
-		Desc:        this.Desc,
+		Tags:  tags,
+		Title: this.Title,
+		//Desc:        this.Desc,
 		Content:     this.Content,
 		CreatedBy:   this.CreatedBy,
 		IsPublished: published,
 	}
 	fmt.Println("add tags:", tags)
-	return models.AddArticle(&article)
+	err := models.AddArticle(&article)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 type EditArcitleService struct {
@@ -82,8 +121,8 @@ func (this *EditArcitleService) EditArcitle(id int) error {
 	article := models.Article{
 		//TagID:     this.TagID,
 		//Tags:       tags,  // update不更新tags
-		Title:      this.Title,
-		Desc:       this.Desc,
+		Title: this.Title,
+		//Desc:       this.Desc,
 		Content:    this.Content,
 		ModifiedBy: this.ModifiedBy,
 	}
