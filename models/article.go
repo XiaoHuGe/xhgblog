@@ -17,23 +17,16 @@ type Article struct {
 
 func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
-	//fmt.Println("model tagId:", tagId)
 	err := db.Preload("Tags").Offset(pageNum).Limit(pageSize).Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-	//db.Where("tags.tag_id = ?", tagId).Find(&articles)
 	return articles, nil
 }
 
 // 获取单个文章
 func GetArticle(id int) (*Article, error) {
 	var article Article
-	//err := db.Where("id = ?", id).First(&article).Error
-	//if err != nil && err != gorm.ErrRecordNotFound {
-	//	return nil, err
-	//}
-	//err = db.Model(&article).Related(&article.Tags).Error
 	err := db.Preload("Tags").Where("id = ? ", id).First(&article).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err

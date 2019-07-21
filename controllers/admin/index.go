@@ -27,13 +27,3 @@ func GetAdminIndexHtml(ctx *gin.Context) {
 		"user":         user,
 	})
 }
-
-//user, _ := ctx.Get(setting.SessionUser)
-//ctx.HTML(http.StatusOK, "admin/index.html", gin.H{
-//"pageCount":    models.CountPage(),
-//"postCount":    models.CountPost(),
-//"tagCount":     models.CountTag(),
-//"commentCount": models.CountComment(),
-//"user":         user,
-//"comments":     models.MustListUnreadComment(),
-//})

@@ -14,21 +14,10 @@ type GetArticleService struct {
 }
 
 func (this *GetArticleService) GetAll() ([]*models.Article, error) {
-	//maps := make(map[string]interface{})
-	//
-	//if this.State != -1 {
-	//	maps["state"] = this.State
-	//}
-	//if this.TagID != -1 {
-	//	maps["tag_id"] = this.TagID
-	//}
-	fmt.Println("ser tag_id:", this.TagID)
 	return models.GetArticles(this.TagID, this.PageNum, this.PageSize)
 }
 
 func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article, err error) {
-	fmt.Println("ser tag_id:", this.TagID)
-
 	articleTags, err := models.GetArticleTagsByTagId(this.TagID)
 	if err != nil {
 		fmt.Println(err)
@@ -42,14 +31,6 @@ func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article,
 		}
 		articles = append(articles, article)
 	}
-	//article, err := models.GetArticle(articleTags.ArticleId)
-	//if err != nil {
-	//	fmt.Println(err)
-	//	return
-	//}
-
-	//articles = append(articles, article)
-
 	return articles, nil
 }
 

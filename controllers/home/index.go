@@ -1,4 +1,4 @@
-package index
+package home
 
 import (
 	"github.com/Unknwon/com"
@@ -84,10 +84,6 @@ func GetIndexByTagHtml(ctx *gin.Context) {
 	}
 
 	count := len(articles)
-	//if err != nil {
-	//	ctx.AbortWithStatus(http.StatusInternalServerError)
-	//	return
-	//}
 
 	getTagService := service.GetTagService{
 		TagName:  "",

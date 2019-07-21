@@ -138,7 +138,6 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            <!-- 虎删除 -->
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isEven $tagkey}}
                             <li><a href="/articles/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>
@@ -151,7 +150,6 @@
                     <!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            <!-- 虎删除 -->
                             {{range $tagkey,$tagvalue:=.tags}}
                             {{if isOdd $tagkey}}
                             {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>*/}}
@@ -172,7 +170,6 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            <!-- 虎删除 -->
                             {{/*{{range $archivekey,$archivevalue:=.archives}}*/}}
                             {{/*{{if isEven $archivekey}}*/}}
                             {{/*<li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>*/}}

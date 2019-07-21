@@ -5,8 +5,7 @@ import (
 	"html/template"
 	"path/filepath"
 	"xhgblog/controllers/admin"
-	"xhgblog/controllers/article"
-	"xhgblog/controllers/index"
+	"xhgblog/controllers/home"
 	"xhgblog/controllers/user"
 	"xhgblog/middleware"
 	"xhgblog/utils/common"
@@ -28,10 +27,10 @@ func InitRouter() *gin.Engine {
 
 	v1 := r.Group("/")
 	{
-		v1.GET("/", index.GetIndexHtml)
-		v1.GET("/index", index.GetIndexHtml)
-		v1.GET("/article/:id", article.GetArticle)
-		v1.GET("/articles/:tag_id", index.GetIndexByTagHtml)
+		v1.GET("/", home.GetIndexHtml)
+		v1.GET("/index", home.GetIndexHtml)
+		v1.GET("/articles/:tag_id", home.GetIndexByTagHtml)
+		v1.GET("/article/:id", home.GetArticle)
 	}
 
 	us := r.Group("/user")
