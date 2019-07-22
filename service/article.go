@@ -11,6 +11,8 @@ type GetArticleService struct {
 	TagID    int
 	PageNum  int
 	PageSize int
+	Year     int
+	Month    int
 }
 
 func (this *GetArticleService) GetAll() ([]*models.Article, error) {
@@ -32,6 +34,11 @@ func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article,
 		articles = append(articles, article)
 	}
 	return articles, nil
+}
+
+func (this *GetArticleService) GetArticlesByArchive() (articles []*models.Article, err error) {
+	articles, err = models.GetArticlesByArchive(this.Year, this.Month, this.PageNum, this.PageSize)
+	return articles, err
 }
 
 func (this *GetArticleService) Count() (int, error) {

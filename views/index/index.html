@@ -170,24 +170,23 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            {{/*{{range $archivekey,$archivevalue:=.archives}}*/}}
-                            {{/*{{if isEven $archivekey}}*/}}
-                            {{/*<li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>*/}}
-                            {{/*</li>*/}}
-                            {{/*{{end}}*/}}
-                            {{/*{{end}}*/}}
+                            {{range $archivekey,$archivevalue:=.archives}}
+                            {{if isEven $archivekey}}
+                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
+                            </li>
+                            {{end}}
+                            {{end}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->
                     <div class="col-lg-6">
                         <ul class="list-unstyled">
-                            <!-- 虎删除 -->
-                            {{/*{{range $archivekey,$archivevalue:=.archives}}*/}}
-                            {{/*{{if isOdd $archivekey}}*/}}
-                            {{/*<li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>*/}}
-                            {{/*</li>*/}}
-                            {{/*{{end}}*/}}
-                            {{/*{{end}}*/}}
+                            {{range $archivekey,$archivevalue:=.archives}}
+                            {{if isOdd $archivekey}}
+                            <li><a href="/archives/{{$archivevalue.Year}}/{{$archivevalue.Month}}">{{dateFormat $archivevalue.ArchiveDate "2006年01月"}}({{$archivevalue.Total}})</a>
+                            </li>
+                            {{end}}
+                            {{end}}
                         </ul>
                     </div>
                     <!-- /.col-lg-6 -->

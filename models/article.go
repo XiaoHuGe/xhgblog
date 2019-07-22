@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -18,6 +19,17 @@ type Article struct {
 func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	err := db.Preload("Tags").Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return articles, nil
+}
+
+//从归档获取文章列表
+func GetArticlesByArchive(year, month, pageNum, pageSize int) ([]*Article, error) {
+	var articles []*Article
+	date := fmt.Sprintf("%d-%02d", year, month)
+	err := db.Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
