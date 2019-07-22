@@ -29,7 +29,7 @@ func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 func GetArticlesByArchive(year, month, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	date := fmt.Sprintf("%d-%02d", year, month)
-	err := db.Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}

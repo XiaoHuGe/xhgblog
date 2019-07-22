@@ -1,7 +1,6 @@
 package home
 
 import (
-	"fmt"
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -155,11 +154,10 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 	if arg := ctx.Param("year"); arg != "" {
 		year = com.StrTo(arg).MustInt()
 	}
-
 	if arg := ctx.Param("month"); arg != "" {
 		month = com.StrTo(arg).MustInt()
 	}
-	fmt.Println("year:", year, "month:", month)
+
 	getArticleService := service.GetArticleService{
 		TagID:    tagId,
 		Year:     year,

@@ -111,7 +111,7 @@
                     <!-- show tags -->
                     <tr th:each="tag : ${article.tags}">
                         {{range $key,$value := .post.Tags}}
-                        <a href="/articles/{{$value.ID}}" class="btn btn-default btn-sm">
+                        <a href="/tag/{{$value.ID}}" class="btn btn-default btn-sm">
                             <span class="glyphicon glyphicon-tag"></span><span th:text="' ' + ${tag.name}"> {{$value.TagName}}</span>
                         </a>
                         {{end}}

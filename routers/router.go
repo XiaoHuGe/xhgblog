@@ -29,8 +29,8 @@ func InitRouter() *gin.Engine {
 	{
 		v1.GET("/", home.GetArticlesHtml)
 		v1.GET("/index", home.GetArticlesHtml)
-		v1.GET("/articles/:tag_id", home.GetArticlesByTagHtml)
-		v1.GET("/archives/:year/:month", home.GetArticlesByArchiveHtml)
+		v1.GET("/tag/:tag_id", home.GetArticlesByTagHtml)
+		v1.GET("/archive/:year/:month", home.GetArticlesByArchiveHtml)
 		v1.GET("/article/:id", home.GetArticle)
 	}
 
