@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"xhgblog/models"
 )
@@ -20,18 +19,10 @@ func (this *GetArticleService) GetAll() ([]*models.Article, error) {
 }
 
 func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article, err error) {
-	articleTags, err := models.GetArticleTagsByTagId(this.TagID)
+	articles, err = models.GetArticlesByTagId(this.TagID, this.PageNum, this.PageSize)
 	if err != nil {
 		fmt.Println(err)
 		return
-	}
-	for _, articleTag := range articleTags {
-		article, err := models.GetArticle(articleTag.ArticleId)
-		if err != nil {
-			fmt.Println(err)
-			return nil, err
-		}
-		articles = append(articles, article)
 	}
 	return articles, nil
 }
@@ -55,32 +46,26 @@ type AddArticleService struct {
 	Tags        string   `form:"tags" json:"tags"`
 	Title       string   `form:"title" json:"title" binding:"required,min=2,max=30"`
 	Desc        string   `form:"desc" json:"desc"` // binding:"required,min=2,max=100"
-	Content     string   `form:"content" json:"content" binding:"required,min=2,max=3000"`
+	Content     string   `form:"content" json:"content" binding:"required,min=2,max=10000"`
 	CreatedBy   string   `form:"created_by" json:"created_by"` // binding:"required,min=2,max=30"
 	IsPublished string   `form:"is_published"`                 //json:"is_published"`
 }
 
 func (this *AddArticleService) AddArticle() error {
-	tags := []models.Tag{}
+	//var tags []models.Tag
+	var tagIds []string
 	if len(this.Tags) > 0 {
-		tagArr := strings.Split(this.Tags, ",")
-		for _, tag := range tagArr {
-			tagId, _ := strconv.ParseUint(tag, 10, 64)
-			tag, _ := models.GetTag(int(tagId))
-			// 标签文章个数
-			tag.Total += 1
-			models.EditTag(int(tag.ID), tag)
-			tags = append(tags, tag)
-		}
+		tagIds = strings.Split(this.Tags, ",")
 	}
+
+	tags, _ := models.GetTagsByIds(tagIds)
 
 	fmt.Println("isPublished :", this.IsPublished)
 	published := "on" == this.IsPublished
 	article := models.Article{
 		//TagID:     this.TagID,
-		Tags:  tags,
-		Title: this.Title,
-		//Desc:        this.Desc,
+		Tags:        tags,
+		Title:       this.Title,
 		Content:     this.Content,
 		CreatedBy:   this.CreatedBy,
 		IsPublished: published,
@@ -105,36 +90,35 @@ type EditArcitleService struct {
 }
 
 func (this *EditArcitleService) EditArcitle(id int) error {
+	//tags := []models.Tag{}
+	//if len(this.Tags) > 0 {
+	//	tagArr := strings.Split(this.Tags, ",")
+	//	for _, tag := range tagArr {
+	//		tagId, _ := strconv.ParseUint(tag, 10, 64)
+	//		tag, _ := models.GetTag(int(tagId))
+	//		//// 标签文章个数
+	//		//tag.Total += 1
+	//		//models.EditTag(int(tag.ID), tag)
+	//		tags = append(tags, tag)
+	//	}
+	//}
+	var tagIds []string
+	if len(this.Tags) > 0 {
+		tagIds = strings.Split(this.Tags, ",")
+	}
+
+	tags, _ := models.GetTagsByIds(tagIds)
 
 	article := models.Article{
 		//TagID:     this.TagID,
-		//Tags:       tags,  // update不更新tags
-		Title: this.Title,
-		//Desc:       this.Desc,
+		Tags:       tags,
+		Title:      this.Title,
 		Content:    this.Content,
 		ModifiedBy: this.ModifiedBy,
 	}
 	err := models.EditArticle(id, &article)
 	if err != nil {
 		return err
-	}
-	// 此处逻辑待优化
-	// 先删除文章下所有关联标签
-	err = models.DeleteTagsByArticleId(id)
-	if err != nil {
-		return err
-	}
-
-	// 重新添加关联
-	if len(this.Tags) > 0 {
-		tagArr := strings.Split(this.Tags, ",")
-		for _, tag := range tagArr {
-			tagId, _ := strconv.ParseUint(tag, 10, 64)
-			err := models.AddArticleJoinTags(id, int(tagId))
-			if err != nil {
-				return err
-			}
-		}
 	}
 	return nil
 }

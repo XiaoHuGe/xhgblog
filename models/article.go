@@ -36,6 +36,21 @@ func GetArticlesByArchive(year, month, pageNum, pageSize int) ([]*Article, error
 	return articles, nil
 }
 
+func GetArticlesByTagId(tagId, pageNum, pageSize int) ([]*Article, error) {
+	var articles []*Article
+	//err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	err := db.Preload("Tags").
+		Joins("JOIN xhgblog_article_tags ON xhgblog_article_tags.article_id = xhgblog_article.id").
+		Joins("JOIN xhgblog_tag ON xhgblog_tag.id = xhgblog_article_tags.tag_id").
+		Where("xhgblog_article_tags.tag_id = ?", tagId).
+		Offset(pageNum).Limit(pageSize).
+		Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return articles, nil
+}
+
 // 获取单个文章
 func GetArticle(id int) (*Article, error) {
 	var article Article
@@ -56,12 +71,11 @@ func DeleteArticle(id int) error {
 
 func EditArticle(id int, article *Article) error {
 	var arti Article
-	err := db.Model(&arti).Where("id = ? ", id).Update(article).Error
+	//err := db.Model(&arti).Where("id = ? ", id).Update(article).Error
+	err := db.Preload("Tags").Where("id = ? ", id).First(&arti).Update(article).Error
 	if err != nil {
 		return err
 	}
-	db.Model(&arti).Association("Tags").Replace(article.Tags)
-
 	return nil
 }
 

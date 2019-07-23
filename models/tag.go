@@ -35,6 +35,15 @@ func GetTag(id int) (Tag, error) {
 	return tag, nil
 }
 
+func GetTagsByIds(ids []string) ([]Tag, error) {
+	var tags []Tag
+	err := db.Where("id IN (?)", ids).Find(&tags).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return tags, err
+	}
+	return tags, nil
+}
+
 func GetTagByName(name string) (Tag, error) {
 	var tag Tag
 	err := db.Where("tag_name = ? ", name).Find(&tag).Error

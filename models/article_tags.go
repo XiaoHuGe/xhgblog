@@ -22,12 +22,3 @@ func AddArticleJoinTags(articleId, tagId int) error {
 	}).Error
 	return err
 }
-
-func GetArticleTagsByTagId(tagId int) ([]*ArticleTags, error) {
-	var articleTags []*ArticleTags
-	err := db.Where("tag_id = ?", tagId).Find(&articleTags).Error
-	if err != nil {
-		return nil, err
-	}
-	return articleTags, nil
-}
