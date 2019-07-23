@@ -131,14 +131,20 @@
 
         });
 
-        function deleteTag(element){
+        function deleteTag(element, tagId){
+            $.post("/admin/tag/"+tagId+"/delete",{},function(result){
+                console.log(result);
+                if(result.succeed){
+                    window.location.href = window.location.href;
+                }
+            },"json")
             $(element).parent().remove();
         }
 
         function createButton(tagId, tagName) {
             var button = `<button class="btn btn-default btn-sm tagButton">
                     <a href="/tag/` + tagId + `">` + tagName + `</a>
-                    <a class="removeArticleTag" href="#" onclick="deleteTag(this);">
+                    <a class="removeArticleTag" href="#" onclick="deleteTag(this, `+ tagId +`);">
                         <span class="glyphicon glyphicon glyphicon-trash"></span>
                     </a>
                     <span class="tagId" hidden="hidden">` + tagId + `</span>

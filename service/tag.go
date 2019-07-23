@@ -45,14 +45,14 @@ func (this *AddTagService) AddTag() (*models.Tag, error) {
 	tag, err := models.ExistTagByName(this.TagName)
 	if err == nil {
 		fmt.Println("存在此标签")
-		//tag.Total += 1
-		//models.EditTag(int(tag.ID), tag)
+		tag.Total += 1
+		models.EditTag(int(tag.ID), tag)
 		return tag, nil
 	}
 
 	tag = &models.Tag{
 		TagName: this.TagName,
-		Total:   0,
+		Total:   1,
 		//CreatedBy: this.CreatedBy,
 	}
 	err = models.AddTag(tag)
@@ -64,18 +64,20 @@ func (this *AddTagService) AddTag() (*models.Tag, error) {
 
 type EditTagService struct {
 	TagName string `form:"tag_name" json:"tag_name" binding:"required,min=2,max=10"`
+	Total   int
 	//ModifiedBy string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=10"`
 }
 
 func (this *EditTagService) EdidTag(id int) error {
 	tag := &models.Tag{
 		TagName: this.TagName,
+		Total:   this.Total,
 		//ModifiedBy: this.ModifiedBy,
 	}
 	return models.EditTag(id, tag)
 }
 
-func CheckTagByID(id int) (bool, error) {
+func CheckTagByID(id int) (*models.Tag, error) {
 	return models.ExistTagByID(id)
 }
 

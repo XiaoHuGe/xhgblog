@@ -15,6 +15,14 @@ func DeleteTagsByArticleId(id int) error {
 	return nil
 }
 
+func DeleteTagsByTagId(id int) error {
+	err := db.Where("tag_id = ?", id).Delete(&ArticleTags{}).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func AddArticleJoinTags(articleId, tagId int) error {
 	err := db.Create(ArticleTags{
 		ArticleId: articleId,

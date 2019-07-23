@@ -57,6 +57,7 @@ func InitRouter() *gin.Engine {
 		authed.GET("article/:id/edit", admin.EditArticleHtml)
 		authed.POST("article/:id/edit", admin.EditArticle)
 
+		authed.POST("tag/:id/delete", admin.DeleteTag)
 		authed.POST("tag", admin.AddTag)
 
 		authed.GET("user/me", user.UserMe)

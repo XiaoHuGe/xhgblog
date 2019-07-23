@@ -57,10 +57,9 @@ func (this *AddArticleService) AddArticle() error {
 	if len(this.Tags) > 0 {
 		tagIds = strings.Split(this.Tags, ",")
 	}
-
 	tags, _ := models.GetTagsByIds(tagIds)
 
-	fmt.Println("isPublished :", this.IsPublished)
+	//fmt.Println("isPublished :", this.IsPublished)
 	published := "on" == this.IsPublished
 	article := models.Article{
 		//TagID:     this.TagID,
@@ -70,7 +69,7 @@ func (this *AddArticleService) AddArticle() error {
 		CreatedBy:   this.CreatedBy,
 		IsPublished: published,
 	}
-	fmt.Println("add tags:", tags)
+	//fmt.Println("add tags:", tags)
 	err := models.AddArticle(&article)
 	if err != nil {
 		return err
@@ -90,25 +89,13 @@ type EditArcitleService struct {
 }
 
 func (this *EditArcitleService) EditArcitle(id int) error {
-	//tags := []models.Tag{}
-	//if len(this.Tags) > 0 {
-	//	tagArr := strings.Split(this.Tags, ",")
-	//	for _, tag := range tagArr {
-	//		tagId, _ := strconv.ParseUint(tag, 10, 64)
-	//		tag, _ := models.GetTag(int(tagId))
-	//		//// 标签文章个数
-	//		//tag.Total += 1
-	//		//models.EditTag(int(tag.ID), tag)
-	//		tags = append(tags, tag)
-	//	}
-	//}
+	fmt.Println("EditArcitleService:", this.Tags)
 	var tagIds []string
 	if len(this.Tags) > 0 {
 		tagIds = strings.Split(this.Tags, ",")
 	}
-
+	models.DeleteTagsByArticleId(id)
 	tags, _ := models.GetTagsByIds(tagIds)
-
 	article := models.Article{
 		//TagID:     this.TagID,
 		Tags:       tags,

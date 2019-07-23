@@ -69,6 +69,14 @@ func EditTag(id int, data interface{}) error {
 	return nil
 }
 
+func EditTagTotal(id, total int) error {
+	err := db.Model(&Tag{}).Where("id = ?", id).Update("total = ?", total).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func AddTag(tag *Tag) error {
 	err := db.Create(tag).Error
 	if err != nil {
@@ -86,12 +94,13 @@ func GetTagTotal(maps interface{}) (int, error) {
 	return count, nil
 }
 
-func ExistTagByID(id int) (bool, error) {
-	err := db.Where("id = ? ", id).First(&Tag{}).Error
+func ExistTagByID(id int) (*Tag, error) {
+	var tag Tag
+	err := db.Where("id = ? ", id).First(&tag).Error
 	if err != nil && err == gorm.ErrRecordNotFound { // 错误不为空且为未找到时返回false
-		return false, err
+		return nil, err
 	}
-	return true, nil
+	return &tag, nil
 }
 
 func ExistTagByName(name string) (*Tag, error) {
