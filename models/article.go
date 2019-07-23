@@ -36,6 +36,17 @@ func GetArticlesByArchive(year, month, pageNum, pageSize int) ([]*Article, error
 	return articles, nil
 }
 
+func GetArticleTotalByArchive(year, month int) (int, error) {
+	var articles []*Article
+	var count int
+	date := fmt.Sprintf("%d-%02d", year, month)
+	err := db.Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Find(&articles).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 func GetArticlesByTagId(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	//err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error

@@ -25,13 +25,6 @@ func (this *GetTagService) GetAll() ([]models.Tag, error) {
 }
 
 func (this *GetTagService) Count() (int, error) {
-	//maps := make(map[string]interface{})
-	//if this.TagName != "" {
-	//	maps["name"] = this.TagName
-	//}
-	//if this.State >= 0 {
-	//	maps["state"] = this.State
-	//}
 	return models.GetTagTotal(make(map[string]interface{}))
 }
 

@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"fmt"
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -112,7 +111,6 @@ func EditArticleHtml(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	fmt.Println("article tags:", article.Tags)
 	//article.Tags, _ = models.ListTagByPostId(id)  // 获取
 	ctx.HTML(http.StatusOK, "post/modify.html", gin.H{
 		"post": article,

@@ -30,3 +30,13 @@ func AddArticleJoinTags(articleId, tagId int) error {
 	}).Error
 	return err
 }
+
+func GetArticleTotalByTagId(tagId int) (int, error) {
+	var articleTags []*ArticleTags
+	var count int
+	err := db.Where("tag_id = ?", tagId).Find(&articleTags).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}

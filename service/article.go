@@ -41,6 +41,14 @@ func (this *GetArticleService) Count() (int, error) {
 	return models.GetArticleTotal(make(map[string]interface{}))
 }
 
+func (this *GetArticleService) GetCountByArchive() (int, error) {
+	return models.GetArticleTotalByArchive(this.Year, this.Month)
+}
+
+func (this *GetArticleService) GetCountByTagId() (int, error) {
+	return models.GetArticleTotalByTagId(this.TagID)
+}
+
 type AddArticleService struct {
 	TagName     []string `form:"tag_name" json:"tag_name"`
 	Tags        string   `form:"tags" json:"tags"`

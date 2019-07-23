@@ -74,6 +74,11 @@ func GetArticlesHtml(ctx *gin.Context) {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
+
+	pageIndex := com.StrTo(ctx.Query("page")).MustInt()
+	if pageIndex < 1 {
+		pageIndex = 1
+	}
 	totalPage := count / setting.AppSetting.PageSize
 	if count%setting.AppSetting.PageSize > 0 {
 		totalPage = count/setting.AppSetting.PageSize + 1
@@ -87,7 +92,7 @@ func GetArticlesHtml(ctx *gin.Context) {
 		"archives":        archives,
 		"links":           "",
 		"user":            user,
-		"pageIndex":       com.StrTo(ctx.Query("page")).MustInt(),
+		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
 		"maxReadPosts":    "",
@@ -113,7 +118,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 		return
 	}
 
-	count := len(articles)
+	count, _ := getArticleService.GetCountByTagId()
 
 	getTagService := service.GetTagService{
 		TagName:  "",
@@ -124,6 +129,10 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
+	}
+	pageIndex := com.StrTo(ctx.Query("page")).MustInt()
+	if pageIndex < 1 {
+		pageIndex = 1
 	}
 	totalPage := count / setting.AppSetting.PageSize
 	if count%setting.AppSetting.PageSize > 0 {
@@ -138,7 +147,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 		"archives":        archives,
 		"links":           "",
 		"user":            user,
-		"pageIndex":       com.StrTo(ctx.Query("page")).MustInt(),
+		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
 		"maxReadPosts":    "",
@@ -171,7 +180,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 		return
 	}
 
-	count := len(articles)
+	count, _ := getArticleService.GetCountByArchive()
 
 	getTagService := service.GetTagService{
 		TagName:  "",
@@ -182,6 +191,10 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 	if err != nil {
 		ctx.AbortWithStatus(http.StatusInternalServerError)
 		return
+	}
+	pageIndex := com.StrTo(ctx.Query("page")).MustInt()
+	if pageIndex < 1 {
+		pageIndex = 1
 	}
 	totalPage := count / setting.AppSetting.PageSize
 	if count%setting.AppSetting.PageSize > 0 {
@@ -196,7 +209,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 		"archives":        archives,
 		"links":           "",
 		"user":            user,
-		"pageIndex":       com.StrTo(ctx.Query("page")).MustInt(),
+		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
 		"maxReadPosts":    "",
