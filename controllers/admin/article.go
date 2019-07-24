@@ -91,7 +91,7 @@ func DeleteArticle(ctx *gin.Context) {
 	G.Response(http.StatusOK, resp)
 }
 
-func EditArticleHtml(ctx *gin.Context) {
+func GetEditArticleHtml(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}
 

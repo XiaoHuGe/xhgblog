@@ -54,7 +54,7 @@ func InitRouter() *gin.Engine {
 		authed.GET("new_article", admin.GetAddArticleHtml)
 		authed.POST("new_article", admin.AddArticle)
 		authed.POST("article/:id/delete", admin.DeleteArticle)
-		authed.GET("article/:id/edit", admin.EditArticleHtml)
+		authed.GET("article/:id/edit", admin.GetEditArticleHtml)
 		authed.POST("article/:id/edit", admin.EditArticle)
 
 		authed.POST("tag/:id/delete", admin.DeleteTag)
@@ -63,27 +63,6 @@ func InitRouter() *gin.Engine {
 		authed.GET("user/me", user.UserMe)
 		//authed.GET("user/logout", user.Logout)
 	}
-
-	//// 获取标签列表
-	//v1.GET("/tags", tag.GetTags)
-	//// 新建标签
-	//v1.POST("/tag", tag.AddTag)
-	//// 修改标签
-	//v1.PUT("/tag/:id", tag.EditTag)
-	//// 删除标签
-	//v1.DELETE("/tag/:id", tag.DeleteTag)
-	//
-	//// 获取文章列表
-	//v1.GET("/articles", article.GetArticles)
-	//// 获取指定文章
-	//v1.GET("/article/:id", article.GetArticle)
-	//// 新建文章
-	//v1.POST("/article", article.AddArticle)
-	//// 修改文章
-	//v1.PUT("/article/:id", article.EditArticle)
-	//// 删除文章
-	//v1.DELETE("/article/:id", article.DeleteArticle)
-
 	return r
 }
 

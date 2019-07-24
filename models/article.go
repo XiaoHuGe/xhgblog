@@ -18,7 +18,7 @@ type Article struct {
 
 func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
-	err := db.Preload("Tags").Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	err := db.Preload("Tags").Offset(pageNum).Limit(pageSize).Order("created_at desc").Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
 func GetArticlesByArchive(year, month, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	date := fmt.Sprintf("%d-%02d", year, month)
-	err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
+	err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Order("created_at desc").Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func GetArticlesByTagId(tagId, pageNum, pageSize int) ([]*Article, error) {
 		Joins("JOIN xhgblog_article_tags ON xhgblog_article_tags.article_id = xhgblog_article.id").
 		Joins("JOIN xhgblog_tag ON xhgblog_tag.id = xhgblog_article_tags.tag_id").
 		Where("xhgblog_article_tags.tag_id = ?", tagId).
-		Offset(pageNum).Limit(pageSize).
+		Offset(pageNum).Limit(pageSize).Order("created_at desc").
 		Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err

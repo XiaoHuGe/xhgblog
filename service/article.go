@@ -53,7 +53,6 @@ type AddArticleService struct {
 	TagName     []string `form:"tag_name" json:"tag_name"`
 	Tags        string   `form:"tags" json:"tags"`
 	Title       string   `form:"title" json:"title" binding:"required,min=2,max=30"`
-	Desc        string   `form:"desc" json:"desc"` // binding:"required,min=2,max=100"
 	Content     string   `form:"content" json:"content" binding:"required,min=2,max=10000"`
 	CreatedBy   string   `form:"created_by" json:"created_by"` // binding:"required,min=2,max=30"
 	IsPublished string   `form:"is_published"`                 //json:"is_published"`
