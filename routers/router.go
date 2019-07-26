@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"html/template"
 	"path/filepath"
+	"xhgblog/controllers"
 	"xhgblog/controllers/admin"
 	"xhgblog/controllers/home"
 	"xhgblog/controllers/user"
@@ -24,6 +25,7 @@ func InitRouter() *gin.Engine {
 	r.Use(middleware.CurrentUser())
 
 	r.Static("/static", filepath.Join("", "./static"))
+	r.NoRoute(controllers.NoRouterHtml)
 
 	v1 := r.Group("/")
 	{
@@ -37,8 +39,10 @@ func InitRouter() *gin.Engine {
 	us := r.Group("/user")
 	{
 		//v1.GET("/", index.GetIndexHtml)
-		us.GET("register", user.RegisterHtml)
-		us.POST("register", user.Register)
+		if setting.AppSetting.Application.RegisterEnabled {
+			us.GET("register", user.RegisterHtml)
+			us.POST("register", user.Register)
+		}
 		us.GET("login", user.LoginHtml)
 		us.POST("login", user.Login)
 		us.GET("logout", user.Logout)

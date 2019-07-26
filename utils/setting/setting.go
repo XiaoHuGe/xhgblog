@@ -22,8 +22,9 @@ type App struct {
 var AppSetting = &App{}
 
 type Application struct {
-	PageSize  int    `yaml:"PageSize"`
-	JwtSecret string `yaml:"JwtSecret"`
+	PageSize        int    `yaml:"PageSize"`
+	JwtSecret       string `yaml:"JwtSecret"`
+	RegisterEnabled bool   `yaml:"RegisterEnabled"`
 }
 
 type Server struct {

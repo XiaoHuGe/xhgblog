@@ -13,7 +13,8 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="/static/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+    {{/*<link href="/static/libs/font-awesome/css/font-awesome.min.css">*/}}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <!-- Custom CSS -->
     <link href="/static/css/blog-home.css" rel="stylesheet">
 
@@ -226,23 +227,43 @@
                 <!-- /.row -->
             </div>
 
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-link"></span> 友情链接</h5>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-unstyled">
-                            <!-- 虎删除 -->
+            {{/*<div class="well">*/}}
+                {{/*<h5><span class="glyphicon glyphicon-link"></span> 友情链接</h5>*/}}
+                {{/*<div class="row">*/}}
+                    {{/*<div class="col-lg-12">*/}}
+                        {{/*<ul class="list-unstyled">*/}}
+                            {{/*<!-- 虎删除 -->*/}}
                             {{/*{{range .links}}*/}}
                             {{/*<li><a href="/link/{{.ID}}" target="_blank" title="{{.Url}}">{{.Name}}</a>*/}}
                             {{/*</li>*/}}
                            {{/*{{end}}*/}}
-                        </ul>
-                    </div>
-                    <!-- /.col-lg-6 -->
-                </div>
-                <!-- /.row -->
+                        {{/*</ul>*/}}
+                    {{/*</div>*/}}
+                    {{/*<!-- /.col-lg-6 -->*/}}
+                {{/*</div>*/}}
+                {{/*<!-- /.row -->*/}}
+            {{/*</div>*/}}
+            <div class="col-lg-12 col-md-10">
+                <ul class="list-inline text-left">
+                    {{/*/static/libs/font-awesome/css/font-awesome.min.css*/}}
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    <li>
+                        <a target="_blank" href="https://www.jianshu.com/u/897c7b78ac0c">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-stack-1x fa-inverse">简</i>
+                                    </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://github.com/XiaoHuGe">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
             </div>
-
         </div>
 
     </div>
@@ -250,7 +271,7 @@
 
     <hr>
 
-   {{template "footer.html"}}
+   {{/*{{template "footer.html"}}*/}}
 
 </div>
 <!-- /.container -->

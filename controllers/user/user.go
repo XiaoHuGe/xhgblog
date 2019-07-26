@@ -45,7 +45,6 @@ func Register(ctx *gin.Context) {
 	resp.Message = e.GetMsg(resp.Code)
 	resp.Succeed = true
 	G.Response(http.StatusOK, resp)
-
 }
 
 func Login(ctx *gin.Context) {

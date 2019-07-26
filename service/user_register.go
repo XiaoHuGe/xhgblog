@@ -59,7 +59,7 @@ func (this *UserRegisterService) UserRegister() (*models.User, *app.Response) {
 
 	user = &models.User{
 		Email: this.Email,
-		State: 0,
+		State: 1,
 	}
 
 	res := user.GeneratePassword(this.Password)

@@ -17,8 +17,10 @@ func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) 
 	)
 	if pageNum > 0 && pageSize > 0 {
 		err = db.Where(maps).Find(&tags).Offset(pageNum).Limit(pageSize).Error
+		//err = db.Table("xhgblog_tag").Select("tag_name, count(tag_name) as total").Group("tag_name").Order("total desc").Scan(&tags).Error
 	} else {
 		err = db.Where(maps).Find(&tags).Error
+		//err = db.Table("xhgblog_tag").Select("tag_name, count(tag_name) as total").Group("tag_name").Order("total desc").Scan(&tags).Error
 	}
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
