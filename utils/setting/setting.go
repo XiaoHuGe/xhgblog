@@ -10,7 +10,8 @@ import (
 const (
 	SESSION_USER_ID      = "user_id"
 	SESSION_USER         = "user"
-	SESSION_GITHUB_STATE = "GITHUB_STATE" // github state session key
+	SESSION_GITHUB_STATE = "github_state"
+	SESSION_CAPTCHA      = "session_captcha"
 )
 
 type App struct {
