@@ -12,6 +12,9 @@ type User struct {
 	PasswordDigest string `json:"password_digest"`
 	AvatarUrl      string `json:"avatar_url"`
 	State          int    `json:"state"`
+	GithubLogin    string `json:"github_login"`
+	GithubUrl      string `json:"github_url"`
+	IsAdmin        bool   `json:"is_admin"`
 }
 
 func GetUser(ID interface{}) (User, error) {
@@ -22,6 +25,19 @@ func GetUser(ID interface{}) (User, error) {
 
 func AddUser(user *User) error {
 	return db.Create(user).Error
+}
+
+func FirstOrAddUser(user *User) error {
+	return db.Where("github_login = ?", user.GithubLogin).FirstOrCreate(user).Error
+}
+
+func IsExistUserByEmail(email string) (*User, error) {
+	var user User
+	err := db.Where("email = ?", email).First(&user).Error
+	if err != nil && err == gorm.ErrRecordNotFound {
+		return &user, err
+	}
+	return &user, nil
 }
 
 func GetUserByEmail(email string) (*User, error) {

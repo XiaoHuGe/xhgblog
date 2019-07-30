@@ -29,8 +29,8 @@ func (this *UserRegisterService) UserRegValidation() *app.Response {
 			msg[i] = err.Message
 		}
 		return &app.Response{
-			Code: e.INVALID_PARAMS,
-			Message:  msg,
+			Code:    e.INVALID_PARAMS,
+			Message: msg,
 		}
 	}
 
@@ -38,8 +38,8 @@ func (this *UserRegisterService) UserRegValidation() *app.Response {
 	fmt.Println("PasswordConfirm", this.PasswordConfirm)
 	if this.Password != this.PasswordConfirm {
 		return &app.Response{
-			Code: e.ERROR_PASSWORD_DIFFER,
-			Message:  e.GetMsg(e.ERROR_PASSWORD_DIFFER),
+			Code:    e.ERROR_PASSWORD_DIFFER,
+			Message: e.GetMsg(e.ERROR_PASSWORD_DIFFER),
 		}
 	}
 
@@ -52,29 +52,30 @@ func (this *UserRegisterService) UserRegister() (*models.User, *app.Response) {
 	user, err := models.GetUserByEmail(this.Email)
 	if err == nil && user.ID > 0 {
 		return user, &app.Response{
-			Code: e.ERROR_EXIST_EMAIL,
-			Message:  e.GetMsg(e.ERROR_EXIST_EMAIL),
+			Code:    e.ERROR_EXIST_EMAIL,
+			Message: e.GetMsg(e.ERROR_EXIST_EMAIL),
 		}
 	}
 
 	user = &models.User{
-		Email: this.Email,
-		State: 1,
+		Email:   this.Email,
+		IsAdmin: true,
+		State:   1,
 	}
 
 	res := user.GeneratePassword(this.Password)
 	if res != nil {
 		return user, &app.Response{
-			Code: e.ERROR_ENCRYPT,
-			Message:  e.GetMsg(e.ERROR_ENCRYPT),
+			Code:    e.ERROR_ENCRYPT,
+			Message: e.GetMsg(e.ERROR_ENCRYPT),
 		}
 	}
 
 	err = models.AddUser(user)
 	if err != nil {
 		return user, &app.Response{
-			Code: e.ERROR_CREATE_SQL,
-			Message:  e.GetMsg(e.ERROR_CREATE_SQL),
+			Code:    e.ERROR_CREATE_SQL,
+			Message: e.GetMsg(e.ERROR_CREATE_SQL),
 		}
 	}
 

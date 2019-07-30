@@ -31,7 +31,7 @@ func GetArticle(ctx *gin.Context) {
 		return
 	}
 
-	user, _ := ctx.Get(setting.SessionUser)
+	user, _ := ctx.Get(setting.SESSION_USER)
 
 	ctx.HTML(http.StatusOK, "post/display.html", gin.H{
 		"post": article,
@@ -84,7 +84,7 @@ func GetArticlesHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
-	user, _ := ctx.Get(setting.SessionUser)
+	user, _ := ctx.Get(setting.SESSION_USER)
 
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
@@ -139,7 +139,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
-	user, _ := ctx.Get(setting.SessionUser)
+	user, _ := ctx.Get(setting.SESSION_USER)
 
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
@@ -201,7 +201,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
-	user, _ := ctx.Get(setting.SessionUser)
+	user, _ := ctx.Get(setting.SESSION_USER)
 
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,

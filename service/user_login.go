@@ -26,32 +26,32 @@ func (this *UserLoginService) UserLoginValidation() *app.Response {
 			msg[i] = err.Message
 		}
 		return &app.Response{
-			Code: e.INVALID_PARAMS,
-			Message:  msg,
+			Code:    e.INVALID_PARAMS,
+			Message: msg,
 		}
 	}
 
 	return nil
 }
 
-func (this *UserLoginService) UserLogin() (models.User, *app.Response) {
+func (this *UserLoginService) UserLogin() (models.User, *app.Response, error) {
 	//var user models.User
 	//user.State = 1
-	user, err := models.GetUserByEmail(this.Email)
+	user, err := models.IsExistUserByEmail(this.Email)
 	if err != nil {
 		return *user, &app.Response{
-			Code: e.ERROR_ENAIL_OR_PASS,
-			Message:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
-		}
+			Code:    e.ERROR_NOT_ENAIL,
+			Message: e.GetMsg(e.ERROR_NOT_ENAIL),
+		}, err
 	}
 
 	//err = bcrypt.CompareHashAndPassword([]byte(user.PasswordDigest), []byte(this.Password))
 	err = user.CheckPassword(this.Password)
 	if err != nil {
 		return *user, &app.Response{
-			Code: e.ERROR_ENAIL_OR_PASS,
-			Message:  e.GetMsg(e.ERROR_ENAIL_OR_PASS),
-		}
+			Code:    e.ERROR_ENAIL_OR_PASS,
+			Message: e.GetMsg(e.ERROR_ENAIL_OR_PASS),
+		}, err
 	}
-	return *user, nil
+	return *user, nil, nil
 }

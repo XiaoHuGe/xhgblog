@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -30,7 +31,11 @@ func ManageArticleHtml(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	user, _ := ctx.Get(setting.SessionUser)
+	user, exist := ctx.Get(setting.SESSION_USER)
+	if exist != true {
+		fmt.Println("user not exist")
+		return
+	}
 
 	ctx.HTML(http.StatusOK, "admin/post.html", gin.H{
 		"posts":  articles,

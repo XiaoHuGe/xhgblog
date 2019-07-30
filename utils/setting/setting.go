@@ -7,9 +7,10 @@ import (
 	"time"
 )
 
-var (
-	SessionUserId = "user_id"
-	SessionUser   = "user"
+const (
+	SESSION_USER_ID      = "user_id"
+	SESSION_USER         = "user"
+	SESSION_GITHUB_STATE = "GITHUB_STATE" // github state session key
 )
 
 type App struct {
@@ -17,6 +18,7 @@ type App struct {
 	Server
 	Database
 	Sessions
+	OAuth
 }
 
 var AppSetting = &App{}
@@ -30,7 +32,7 @@ type Application struct {
 type Server struct {
 	RunMode      string        `yaml:"RunMode"`
 	HttpPort     int           `yaml:"HttpPort"`
-	ReadTimeout  time.Duration `yaml:"ReadTimeoutmeout"`
+	ReadTimeout  time.Duration `yaml:"ReadTimeout"`
 	WriteTimeout time.Duration `yaml:"WriteTimeout"`
 }
 
@@ -45,6 +47,14 @@ type Database struct {
 
 type Sessions struct {
 	Secret string `yaml:"Secret"`
+}
+
+type OAuth struct {
+	GithubClientID     string `yaml:"GithubClientID"`
+	GithubClientSecret string `yaml:"GithubClientSecret"`
+	GithubRedirectUrl  string `yaml:"GithubRedirectUrl"`
+	GithubAuthUrl      string `yaml:"GithubAuthUrl"`
+	GithubTokenUrl     string `yaml:"GithubTokenUrl"`
 }
 
 func Setup() {
