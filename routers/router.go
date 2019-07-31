@@ -35,8 +35,9 @@ func InitRouter() *gin.Engine {
 		v1.GET("archive/:year/:month", home.GetArticlesByArchiveHtml)
 		v1.GET("article/:id", home.GetArticle)
 		v1.GET("auth/:type", user.GetAuth)
-		v1.GET("oauth/redirect", user.RedirectByAuth)
+		v1.GET("oauth/redirect", user.CallbackByAuth)
 		v1.GET("captcha", home.GetCaptcha)
+		v1.POST("visitor/comment", home.AddComment)
 	}
 
 	us := r.Group("/user")

@@ -119,10 +119,10 @@ func Logout(ctx *gin.Context) {
 type GithubUserInfo struct {
 	AvatarURL string `json:"avatar_url"`
 	Login     string `json:"login"`
-	URL       string `json:"url"`
+	HTMLURL   string `json:"html_url"`
 }
 
-func RedirectByAuth(ctx *gin.Context) {
+func CallbackByAuth(ctx *gin.Context) {
 
 	code := ctx.Query("code")
 	state := ctx.Query("state")
@@ -140,12 +140,9 @@ func RedirectByAuth(ctx *gin.Context) {
 		return
 	}
 	userInfo, err := GetUserIndoByToken(token)
-	fmt.Println("-----------")
-	fmt.Println(userInfo)
-	fmt.Println("-----------")
 	user := &models.User{
 		GithubLogin: userInfo.Login,
-		GithubUrl:   userInfo.URL,
+		GithubUrl:   userInfo.HTMLURL,
 		AvatarUrl:   userInfo.AvatarURL,
 		State:       0,
 	}

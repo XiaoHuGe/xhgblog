@@ -18,6 +18,14 @@
   version = "v1.12.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:3e38fc80f8fb9482345b1a596b21dfa2f86d696061cbd76a6620a5658e038132"
+  name = "github.com/dchest/captcha"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "6a29415a8364ec2971fdc62d9e415ed53fc20410"
+
+[[projects]]
   digest = "1:cc93dd54278f6c0dd4b43588b3cf2c07b09b2a6dd4e2617edf81aa8946054c1e"
   name = "github.com/gin-contrib/cors"
   packages = ["."]
@@ -243,6 +251,7 @@
   input-imports = [
     "github.com/Unknwon/com",
     "github.com/astaxie/beego/validation",
+    "github.com/dchest/captcha",
     "github.com/gin-contrib/cors",
     "github.com/gin-contrib/sessions",
     "github.com/gin-contrib/sessions/cookie",

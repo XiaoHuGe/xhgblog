@@ -135,41 +135,41 @@
             </article>
 
             <hr>
-            <!-- 虎删除 -->
-            {{/*<comment>*/}}
-                {{/*<!-- Comment -->*/}}
-                {{/*{{range .post.Comments}}*/}}
-                {{/*<div class="media">*/}}
-                    {{/*<a class="pull-left" href="{{.GithubUrl}}" target="_blank">*/}}
-                        {{/*{{if .AvatarUrl}}*/}}
-                        {{/*<img class="user-image" src="{{.AvatarUrl}}" alt="">*/}}
-                        {{/*{{else}}*/}}
-                        {{/*<img class="user-image" src="http://placehold.it/64x64" alt="">*/}}
-                        {{/*{{end}}*/}}
-                    {{/*</a>*/}}
-                    {{/*<div class="media-body">*/}}
-                        {{/*<h4 class="media-heading"><a href="{{.GithubUrl}}" target="_blank">{{.NickName}}</a>*/}}
-                            {{/*<small>{{dateFormat .CreatedAt "06-01-02 15:04"}}</small>*/}}
-                        {{/*</h4>*/}}
-                        {{/*{{.Content}}*/}}
-                    {{/*</div>*/}}
-                {{/*</div>*/}}
-                {{/*{{end}}*/}}
-            {{/*</comment>*/}}
+
+            <comment>
+                <!-- Comment -->
+                {{range .post.Comments}}
+                <div class="media">
+                    <a class="pull-left" href="{{.GithubUrl}}" target="_blank">
+                        {{if .AvatarUrl}}
+                        <img class="user-image" src="{{.AvatarUrl}}" alt="">
+                        {{else}}
+                        <img class="user-image" src="https://avatars2.githubusercontent.com/u/13872759?v=4" alt="">
+                        {{end}}
+                    </a>
+                    <div class="media-body">
+                        <h4 class="media-heading"><a href="{{.GithubUrl}}" target="_blank">{{.VisitorName}}</a>
+                            <small>{{dateFormat .CreatedAt "06-01-02 15:04"}}</small>
+                        </h4>
+                        {{.Content}}
+                    </div>
+                </div>
+                {{end}}
+            </comment>
 
             <div class="media">
             {{if not .user}}
                 <a href="/auth/github">登录发表评论</a>
             {{else}}
                 <div id="messagebox" class="alert alert-danger" style="display: none;" role="alert"></div>
-            <form id="commentForm" role="form" action="/visitor/new_comment" method="post">
-                <input name="postId" type="hidden" value="{{.post.ID}}">
+            <form id="commentForm" role="form" action="/visitor/comment" method="post">
+                <input name="article_id" type="hidden" value="{{.post.ID}}">
                 <div class="form-group">
                     <textarea name="content" class="form-control" id="inputContent" placeholder="评论"></textarea>
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <input name="verifyCode" class="form-control" placeholder="验证码">
+                        <input name="verify_code" class="form-control" placeholder="验证码">
                     </div>
                     <div class="col-md-4">
                         <img src="/captcha" class="j-verifycode"/>
