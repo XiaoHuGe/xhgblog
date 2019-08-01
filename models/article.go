@@ -8,13 +8,13 @@ import (
 type Article struct {
 	Model
 	//TagID int   `json:"tag_id" gorm:"index"`
-	Tags        []Tag  `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
+	Tags        []Tag      `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
 	Comments    []*Comment `json:"comments"`
-	Title       string `json:"title"`
-	Content     string `json:"content" gorm:"size:3000"`
-	IsPublished bool   `json:"is_published"` // published or not
-	CreatedBy   string `json:"created_by"`
-	ModifiedBy  string `json:"modified_by"`
+	Title       string     `json:"title"`
+	Content     string     `json:"content" gorm:"size:3000"`
+	IsPublished bool       `json:"is_published"` // published or not
+	CreatedBy   string     `json:"created_by"`
+	ModifiedBy  string     `json:"modified_by"`
 }
 
 func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
@@ -111,7 +111,7 @@ func GetArticleTotal(maps interface{}) (int, error) {
 func ExistArticleByID(id int) (bool, error) {
 	var article Article
 	err := db.Where("id = ? ", id).First(&article).Error
-	if err != nil && err == gorm.ErrRecordNotFound { // 错误不为空且为未找到时返回false
+	if err != nil {
 		return false, err
 	}
 	return true, nil

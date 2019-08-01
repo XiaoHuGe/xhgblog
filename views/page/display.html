@@ -88,7 +88,7 @@
 
 <body>
 
-{{template "navigation.html"}}
+{{template "navigation.html" .}}
 
 <!-- Page Content -->
 <div class="container">
@@ -99,10 +99,9 @@
         <div class="col-lg-10 col-lg-offset-1">
             <article class="markdown-body">
             <!-- page content-->
-            <div id="body">{{.page.Body}}</div>
+            <div id="body">{{.page.Content}}</div>
             </article>
         </div>
-
     </div>
     <!-- /.row -->
 

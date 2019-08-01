@@ -34,42 +34,49 @@ func InitRouter() *gin.Engine {
 		v1.GET("tag/:tag_id", home.GetArticlesByTagHtml)
 		v1.GET("archive/:year/:month", home.GetArticlesByArchiveHtml)
 		v1.GET("article/:id", home.GetArticle)
+		v1.GET("about", home.GetAbout)
 		v1.GET("auth/:type", user.GetAuth)
 		v1.GET("oauth/redirect", user.CallbackByAuth)
 		v1.GET("captcha", home.GetCaptcha)
 		v1.POST("visitor/comment", home.AddComment)
-	}
-
-	us := r.Group("/user")
-	{
-		//v1.GET("/", index.GetIndexHtml)
-		if setting.AppSetting.Application.RegisterEnabled {
-			us.GET("register", user.RegisterHtml)
-			us.POST("register", user.Register)
+		us := v1.Group("/user")
+		{
+			//v1.GET("/", index.GetIndexHtml)
+			if setting.AppSetting.Application.RegisterEnabled {
+				us.GET("register", user.RegisterHtml)
+				us.POST("register", user.Register)
+			}
+			us.GET("login", user.LoginHtml)
+			us.POST("login", user.Login)
+			us.GET("logout", user.Logout)
 		}
-		us.GET("login", user.LoginHtml)
-		us.POST("login", user.Login)
-		us.GET("logout", user.Logout)
-	}
 
-	authed := v1.Group("/admin")
-	authed.Use(middleware.AuthRequired())
-	{
-		authed.GET("index", admin.GetAdminIndexHtml)
+		authed := v1.Group("/admin")
+		authed.Use(middleware.AuthRequired())
+		{
+			authed.GET("index", admin.GetAdminIndexHtml)
 
-		//文章crud
-		authed.GET("article", admin.ManageArticleHtml)
-		authed.GET("new_article", admin.GetAddArticleHtml)
-		authed.POST("new_article", admin.AddArticle)
-		authed.POST("article/:id/delete", admin.DeleteArticle)
-		authed.GET("article/:id/edit", admin.GetEditArticleHtml)
-		authed.POST("article/:id/edit", admin.EditArticle)
+			//文章crud
+			authed.GET("article", admin.ManageArticleHtml)
+			authed.GET("new_article", admin.GetAddArticleHtml)
+			authed.POST("new_article", admin.AddArticle)
+			authed.POST("article/:id/delete", admin.DeleteArticle)
+			authed.GET("article/:id/edit", admin.GetEditArticleHtml)
+			authed.POST("article/:id/edit", admin.EditArticle)
 
-		authed.POST("tag/:id/delete", admin.DeleteTag)
-		authed.POST("tag", admin.AddTag)
+			authed.GET("page", admin.ManagePageHtml)
+			authed.GET("new_page", admin.GetAddPageHtml)
+			authed.POST("new_page", admin.AddPage)
+			authed.GET("page/:id/edit", admin.GetEditPageHtml)
+			authed.POST("page/:id/edit", admin.EditPage)
+			authed.POST("page/:id/delete", admin.DeletePage)
 
-		authed.GET("user/me", user.UserMe)
-		//authed.GET("user/logout", user.Logout)
+			authed.POST("tag/:id/delete", admin.DeleteTag)
+			authed.POST("tag", admin.AddTag)
+
+			authed.GET("user/me", user.UserMe)
+			//authed.GET("user/logout", user.Logout)
+		}
 	}
 	return r
 }

@@ -128,9 +128,9 @@
         <!-- create or update a article -->
         <form action="/admin/page/{{.page.ID}}/edit" method="post" id="pageForm" class="form-group">
             <input name="title" type="text" class="form-control" placeholder="Title" value="{{.page.Title}}"/><br/>
-            <textarea id="demo" name="body">{{.page.Body}}</textarea><br/>
+            <textarea id="demo" name="content">{{.page.Content}}</textarea><br/>
             <div class="bootstrap-switch-small">
-                <input id="switchbtn" name="isPublished" type="checkbox" {{if .page.IsPublished}}checked{{end}} />
+                <input id="switchbtn" name="is_published" type="checkbox" {{if .page.IsPublished}}checked{{end}} />
             </div>
         </form>
     </div>
