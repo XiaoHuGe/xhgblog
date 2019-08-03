@@ -76,7 +76,7 @@
                             {{range .posts}}
                             <tr>
                                 <td>{{.ID}}</td>
-                                <td><a href="/post/{{.ID}}" target="_blank">{{.Title}}</a></td>
+                                <td><a href="/article/{{.ID}}" target="_blank">{{.Title}}</a></td>
                                 <td>
                                     <a href="javascript:void(0);" onclick="pushlish('{{.ID}}')"> {{if .IsPublished}}√{{else}}×{{end}}</a>
                                 </td>

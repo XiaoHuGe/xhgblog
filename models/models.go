@@ -46,4 +46,5 @@ func Setup() {
 	db.AutoMigrate(&Tag{})
 	db.AutoMigrate(&Article{})
 	db.AutoMigrate(&Comment{})
+	db.AutoMigrate(&Page{})
 }

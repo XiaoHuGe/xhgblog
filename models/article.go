@@ -11,7 +11,7 @@ type Article struct {
 	Tags        []Tag      `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
 	Comments    []*Comment `json:"comments"`
 	Title       string     `json:"title"`
-	Content     string     `json:"content" gorm:"size:3000"`
+	Content     string     `json:"content" gorm:"size:10000"`
 	IsPublished bool       `json:"is_published"` // published or not
 	CreatedBy   string     `json:"created_by"`
 	ModifiedBy  string     `json:"modified_by"`

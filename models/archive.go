@@ -15,7 +15,7 @@ type Archive struct {
 func GetArchive() ([]*Archive, error) {
 	var archives []*Archive
 	//db.Table("xhgblog_article").Select("DATE_FORMAT(created_at,'%Y-%m') as date, count(*) as total").Group("date").Order("date desc").Scan(&archives)
-	rows, err := db.Table("xhgblog_article").Select("DATE_FORMAT(created_at,'%Y-%m') as month, count(*) as num").Group("month").Order("month desc").Rows()
+	rows, err := db.Table("xhgblog_article").Where("deleted_at IS NULL").Select("DATE_FORMAT(created_at,'%Y-%m') as month, count(*) as num").Group("month").Order("month desc").Rows()
 	if err != nil {
 		return nil, err
 	}

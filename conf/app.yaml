@@ -4,9 +4,9 @@ application:
   RegisterEnabled: false
 
 server:
+#  RunMode: release
+#  HttpPort: 8000
   RunMode: debug
-  #RunMode: release
-  #HttpPort: 8000
   HttpPort: 9080
   ReadTimeout: 60
   WriteTimeout: 60
@@ -23,8 +23,8 @@ database:
   TablePrefix: xhgblog_
 
 oauth:
-  GithubClientID: eb895a7bd1895ebe5635
-  GithubClientSecret: 9e62206fbaa0a073af9a15c700da61dcfc21f252
-  GithubRedirectUrl: http://localhost:9080/oauth/redirect
+  GithubClientID:
+  GithubClientSecret:
+  GithubRedirectUrl:
   GithubAuthUrl: https://github.com/login/oauth/authorize?client_id=%s&scope=user:email&state=%s
   GithubTokenUrl: https://github.com/login/oauth/access_token
