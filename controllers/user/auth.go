@@ -17,7 +17,6 @@ func GetAuth(c *gin.Context) {
 	session.Delete(setting.SESSION_GITHUB_STATE)
 	session.Set(setting.SESSION_GITHUB_STATE, uuid)
 	session.Save()
-
 	authurl := "/user/login"
 	switch authType {
 	case "github":

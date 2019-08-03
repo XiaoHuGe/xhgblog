@@ -126,5 +126,8 @@ func CheckArticleByID(id int) (bool, error) {
 }
 
 func GetArticle(id int) (*models.Article, error) {
-	return models.GetArticle(id)
+	article, err := models.GetArticle(id)
+	article.View++
+	article.UpdateView()
+	return article, err
 }

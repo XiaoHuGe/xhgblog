@@ -121,10 +121,13 @@
                     <span class="createdTime">
                         <span class="glyphicon glyphicon-calendar"></span>{{dateFormat .post.CreatedAt "06-01-02 15:04"}}
                     </span>
-                    <!-- 虎删除 -->
-                    {{/*<span class="createdTime">*/}}
-                        {{/*<span class="glyphicon glyphicon-eye-open"></span>{{.post.View}}&nbsp;&nbsp;*/}}
-                    {{/*</span>*/}}
+                    {{if .user}}
+                        {{if eq .user.IsAdmin true }}
+                            <span class="createdTime">
+                                <span class="glyphicon glyphicon-eye-open"></span>{{.post.View}}&nbsp;&nbsp;
+                            </span>
+                        {{end}}
+                    {{end}}
 
                 </div><!-- display article info -->
                 <br/>

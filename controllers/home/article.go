@@ -85,7 +85,7 @@ func GetArticlesHtml(ctx *gin.Context) {
 	}
 	archives, err := models.GetArchive()
 	user, _ := ctx.Get(setting.SESSION_USER)
-
+	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
@@ -94,7 +94,7 @@ func GetArticlesHtml(ctx *gin.Context) {
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
-		"maxReadPosts":    "",
+		"maxReadPosts":    maxRead,
 		"maxCommentPosts": "",
 	})
 }
@@ -139,7 +139,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 	}
 	archives, err := models.GetArchive()
 	user, _ := ctx.Get(setting.SESSION_USER)
-
+	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
@@ -148,7 +148,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
-		"maxReadPosts":    "",
+		"maxReadPosts":    maxRead,
 		"maxCommentPosts": "",
 	})
 }
@@ -200,7 +200,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 	}
 	archives, err := models.GetArchive()
 	user, _ := ctx.Get(setting.SESSION_USER)
-
+	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
@@ -209,7 +209,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
 		"path":            ctx.Request.URL.Path,
-		"maxReadPosts":    "",
+		"maxReadPosts":    maxRead,
 		"maxCommentPosts": "",
 	})
 }

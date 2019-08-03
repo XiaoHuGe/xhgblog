@@ -128,6 +128,7 @@ func CallbackByAuth(ctx *gin.Context) {
 	state := ctx.Query("state")
 	session := sessions.Default(ctx)
 	if len(state) == 0 || session.Get(setting.SESSION_GITHUB_STATE) != state {
+		fmt.Println("session.Get err:", session.Get(setting.SESSION_GITHUB_STATE))
 		ctx.Abort()
 		return
 	}
@@ -157,6 +158,7 @@ func CallbackByAuth(ctx *gin.Context) {
 	s.Set(setting.SESSION_USER_ID, user.ID) // ctx.Set("user_id", user.ID)
 	s.Save()
 	ctx.Redirect(http.StatusMovedPermanently, "/")
+	return
 
 }
 

@@ -15,6 +15,7 @@ type Article struct {
 	IsPublished bool       `json:"is_published"` // published or not
 	CreatedBy   string     `json:"created_by"`
 	ModifiedBy  string     `json:"modified_by"`
+	View        int        `json:"view"`
 }
 
 func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
@@ -81,6 +82,11 @@ func DeleteArticle(id int) error {
 	return nil
 }
 
+func (art *Article) UpdateView() error {
+	err := db.Model(art).Update("view", art.View).Error
+	return err
+}
+
 func EditArticle(id int, article *Article) error {
 	var arti Article
 	//err := db.Model(&arti).Where("id = ? ", id).Update(article).Error
@@ -115,4 +121,10 @@ func ExistArticleByID(id int) (bool, error) {
 		return false, err
 	}
 	return true, nil
+}
+
+func GetMaxReadArticles() ([]*Article, error) {
+	var articles []*Article
+	err := db.Limit(5).Order("view desc").Find(&articles).Error
+	return articles, err
 }
