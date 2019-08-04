@@ -1,12 +1,9 @@
 package setting
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"html/template"
-	"os"
 	"path/filepath"
-	"strings"
 	"xhgblog/utils/common"
 )
 
@@ -35,9 +32,10 @@ func SetTemplate(engine *gin.Engine) {
 }
 
 func GetCurrentDirectory() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		fmt.Println(err)
-	}
-	return strings.Replace(dir, "\\", "/", -1)
+	//dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	//if err != nil {
+	//	fmt.Println(err)
+	//}
+	//return strings.Replace(dir, "\\", "/", -1)
+	return ""
 }

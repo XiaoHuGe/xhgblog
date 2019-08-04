@@ -44,7 +44,6 @@ func InitRouter() *gin.Engine {
 
 		us := v1.Group("/user")
 		{
-			//v1.GET("/", index.GetIndexHtml)
 			if setting.AppSetting.Application.RegisterEnabled {
 				us.GET("register", user.RegisterHtml)
 				us.POST("register", user.Register)
@@ -52,6 +51,7 @@ func InitRouter() *gin.Engine {
 			us.GET("login", user.LoginHtml)
 			us.POST("login", user.Login)
 			us.GET("logout", user.Logout)
+			us.GET("me", user.UserMe)
 		}
 
 		authed := v1.Group("/admin")
@@ -76,8 +76,6 @@ func InitRouter() *gin.Engine {
 
 			authed.POST("tag/:id/delete", admin.DeleteTag)
 			authed.POST("tag", admin.AddTag)
-
-			authed.GET("user/me", user.UserMe)
 		}
 	}
 	return r

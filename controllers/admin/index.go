@@ -20,10 +20,10 @@ func GetAdminIndexHtml(ctx *gin.Context) {
 	fmt.Printf("postCount=%d, tagCount=%d \n", postCount, tagCount)
 
 	ctx.HTML(http.StatusOK, "admin/index.html", gin.H{
-		"pageCount":    5,
-		"postCount":    postCount,
-		"tagCount":     tagCount,
-		"commentCount": 5,
-		"user":         user,
+		//"pageCount":    5,
+		"postCount": postCount,
+		"tagCount":  tagCount,
+		//"commentCount": 5,
+		"user": user,
 	})
 }
