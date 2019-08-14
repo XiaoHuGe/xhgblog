@@ -7,25 +7,28 @@ import (
 type Tag struct {
 	Model
 	TagName string //`json:"tag_name"`
-	Total   int    // article num
+	Total   int    `json:"total" gorm:"-"` // article num
 }
 
-func GetTags(pageNum, pageSize int, maps map[string]interface{}) ([]Tag, error) {
+func GetTags() ([]*Tag, error) {
 	var (
-		tags []Tag
+		tags []*Tag
 		err  error
 	)
-	if pageNum > 0 && pageSize > 0 {
-		err = db.Where(maps).Find(&tags).Offset(pageNum).Limit(pageSize).Error
-		//err = db.Table("xhgblog_tag").Select("tag_name, count(tag_name) as total").Group("tag_name").Order("total desc").Scan(&tags).Error
-	} else {
-		err = db.Where(maps).Find(&tags).Error
-		//err = db.Table("xhgblog_tag").Select("tag_name, count(tag_name) as total").Group("tag_name").Order("total desc").Scan(&tags).Error
+	rows, err := db.Raw("select t.*,count(*) total from xhgblog_tag t inner join xhgblog_article_tags pt on t.id = pt.tag_id inner join xhgblog_article p on pt.article_id = p.id group by pt.tag_id").Rows()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var tag Tag
+		db.ScanRows(rows, &tag)
+		tags = append(tags, &tag)
 	}
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-	return tags, nil
+	return tags, err
 }
 
 func GetTag(id int) (Tag, error) {
@@ -71,20 +74,13 @@ func EditTag(id int, data interface{}) error {
 	return nil
 }
 
-func EditTagTotal(id, total int) error {
-	err := db.Model(&Tag{}).Where("id = ?", id).Update("total = ?", total).Error
-	if err != nil {
-		return err
+func AddTag(name string) (*Tag, error) {
+	var tag Tag
+	err := db.Where(Tag{TagName: name}).FirstOrCreate(&tag).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
 	}
-	return nil
-}
-
-func AddTag(tag *Tag) error {
-	err := db.Create(tag).Error
-	if err != nil {
-		return err
-	}
-	return nil
+	return &tag, nil
 }
 
 func GetTagTotal(maps interface{}) (int, error) {

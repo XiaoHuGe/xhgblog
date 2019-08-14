@@ -15,7 +15,7 @@ type GetArticleService struct {
 }
 
 func (this *GetArticleService) GetAll() ([]*models.Article, error) {
-	return models.GetArticles(this.TagID, this.PageNum, this.PageSize)
+	return models.GetArticles(this.PageNum, this.PageSize)
 }
 
 func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article, err error) {

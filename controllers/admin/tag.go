@@ -19,7 +19,6 @@ func AddTag(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-
 	tag, err := addTagService.AddTag()
 	if err != nil {
 		resp.Error = err.Error()
@@ -38,18 +37,11 @@ func DeleteTag(ctx *gin.Context) {
 	resp := &app.Response{}
 
 	id := com.StrTo(ctx.Param("id")).MustInt()
-	tag, err := service.CheckTagByID(id)
+	_, err := service.CheckTagByID(id)
 	if err != nil {
 		resp.Message = "没有此标签"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
-		return
-	}
-
-	if tag.Total > 1 {
-		editTagService := service.EditTagService{}
-		editTagService.Total = tag.Total - 1
-		editTagService.EdidTag(id)
 		return
 	}
 
@@ -61,8 +53,8 @@ func DeleteTag(ctx *gin.Context) {
 		return
 	}
 	resp.Code = 200
-	resp.Message = "添加成功"
-	resp.Data = tag
+	resp.Message = "删除标签成功"
+	//resp.Data = tag
 	resp.Succeed = true
 	G.Response(http.StatusOK, resp)
 }

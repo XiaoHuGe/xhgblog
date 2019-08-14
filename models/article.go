@@ -7,7 +7,6 @@ import (
 
 type Article struct {
 	Model
-	//TagID int   `json:"tag_id" gorm:"index"`
 	Tags        []Tag      `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
 	Comments    []*Comment `json:"comments"`
 	Title       string     `json:"title"`
@@ -18,7 +17,7 @@ type Article struct {
 	View        int        `json:"view"`
 }
 
-func GetArticles(tagId, pageNum, pageSize int) ([]*Article, error) {
+func GetArticles(pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	err := db.Preload("Tags").Preload("Comments").Offset(pageNum).Limit(pageSize).Order("created_at desc").Find(&articles).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
@@ -75,10 +74,19 @@ func GetArticle(id int) (*Article, error) {
 }
 
 func DeleteArticle(id int) error {
-	err := db.Where("id = ?", id).Delete(&Article{}).Error
+	tx := db.Begin()
+	err := tx.Where("article_id = ?", id).Delete(&ArticleTags{}).Error
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
+
+	err = tx.Where("id = ?", id).Delete(&Article{}).Error
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
 	return nil
 }
 

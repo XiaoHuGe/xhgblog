@@ -134,12 +134,12 @@
         });
 
         function deleteTag(element, tagId){
-            $.post("/admin/tag/"+tagId+"/delete",{},function(result){
-                console.log(result);
-                if(result.succeed){
-                    window.location.href = window.location.href;
-                }
-            },"json")
+            // $.post("/admin/tag/"+tagId+"/delete",{},function(result){
+            //     console.log(result);
+            //     if(result.succeed){
+            //         window.location.href = window.location.href;
+            //     }
+            // },"json")
             $(element).parent().remove();
         }
 

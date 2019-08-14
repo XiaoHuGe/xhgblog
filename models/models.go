@@ -35,7 +35,7 @@ func Setup() {
 		return setting.AppSetting.Database.TablePrefix + defaultTableName
 	}
 
-	//db.LogMode(true)
+	db.LogMode(true)
 	db.SingularTable(true)
 
 	db.DB().SetConnMaxLifetime(time.Minute * 3)

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"xhgblog/models"
 )
 
@@ -12,12 +11,8 @@ type GetTagService struct {
 	PageSize int
 }
 
-func (this *GetTagService) GetAll() ([]models.Tag, error) {
-	maps := make(map[string]interface{})
-	if this.TagName != "" {
-		maps["name"] = this.TagName
-	}
-	tags, err := models.GetTags(this.PageNum, this.PageSize, maps)
+func (this *GetTagService) GetAll() ([]*models.Tag, error) {
+	tags, err := models.GetTags()
 	if err != nil {
 		return nil, err
 	}
@@ -35,20 +30,7 @@ type AddTagService struct {
 
 func (this *AddTagService) AddTag() (*models.Tag, error) {
 
-	tag, err := models.ExistTagByName(this.TagName)
-	if err == nil {
-		fmt.Println("存在此标签")
-		tag.Total += 1
-		models.EditTag(int(tag.ID), tag)
-		return tag, nil
-	}
-
-	tag = &models.Tag{
-		TagName: this.TagName,
-		Total:   1,
-		//CreatedBy: this.CreatedBy,
-	}
-	err = models.AddTag(tag)
+	tag, err := models.AddTag(this.TagName)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +40,6 @@ func (this *AddTagService) AddTag() (*models.Tag, error) {
 type EditTagService struct {
 	TagName string `form:"tag_name" json:"tag_name" binding:"required,min=2,max=10"`
 	Total   int
-	//ModifiedBy string `form:"modified_by" json:"modified_by" binding:"required,min=2,max=10"`
 }
 
 func (this *EditTagService) EdidTag(id int) error {
