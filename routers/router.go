@@ -28,10 +28,11 @@ func InitRouter() *gin.Engine {
 
 	v1 := r.Group("/")
 	{
-		v1.GET("/", home.GetArticlesHtml)
-		v1.GET("index", home.GetArticlesHtml)
-		v1.GET("tag/:tag_id", home.GetArticlesByTagHtml)
-		v1.GET("archive/:year/:month", home.GetArticlesByArchiveHtml)
+		v1.GET("/", home.GetArticles)
+		v1.GET("index", home.GetArticles)
+		v1.GET("tag/:tag_id", home.GetArticlesByTag)
+		v1.GET("archive/:year/:month", home.GetArticlesByArchive)
+		v1.GET("category/:category_id", home.GetArticlesByCategory)
 		v1.GET("article/:id", home.GetArticle)
 
 		v1.GET("about", home.GetAbout)
@@ -57,17 +58,17 @@ func InitRouter() *gin.Engine {
 		authed := v1.Group("/admin")
 		authed.Use(middleware.AuthRequired())
 		{
-			authed.GET("index", admin.GetAdminIndexHtml)
+			authed.GET("index", admin.GetAdminIndex)
 
 			//文章crud
-			authed.GET("article", admin.ManageArticleHtml)
+			authed.GET("article", admin.GetArticles)
 			authed.GET("new_article", admin.GetAddArticleHtml)
 			authed.POST("new_article", admin.AddArticle)
 			authed.POST("article/:id/delete", admin.DeleteArticle)
 			authed.GET("article/:id/edit", admin.GetEditArticleHtml)
 			authed.POST("article/:id/edit", admin.EditArticle)
 
-			authed.GET("page", admin.ManagePageHtml)
+			authed.GET("page", admin.GetPages)
 			authed.GET("new_page", admin.GetAddPageHtml)
 			authed.POST("new_page", admin.AddPage)
 			authed.GET("page/:id/edit", admin.GetEditPageHtml)
@@ -76,6 +77,8 @@ func InitRouter() *gin.Engine {
 
 			authed.POST("tag/:id/delete", admin.DeleteTag)
 			authed.POST("tag", admin.AddTag)
+
+			authed.POST("category", admin.AddCategory)
 		}
 	}
 	return r

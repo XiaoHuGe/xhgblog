@@ -2,16 +2,18 @@ package service
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"xhgblog/models"
 )
 
 type GetArticleService struct {
-	TagID    int
-	PageNum  int
-	PageSize int
-	Year     int
-	Month    int
+	TagID      int
+	CategoryID int
+	PageNum    int
+	PageSize   int
+	Year       int
+	Month      int
 }
 
 func (this *GetArticleService) GetAll() ([]*models.Article, error) {
@@ -20,6 +22,15 @@ func (this *GetArticleService) GetAll() ([]*models.Article, error) {
 
 func (this *GetArticleService) GetArticlesByTagId() (articles []*models.Article, err error) {
 	articles, err = models.GetArticlesByTagId(this.TagID, this.PageNum, this.PageSize)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	return articles, nil
+}
+
+func (this *GetArticleService) GetArticlesByCategoryId() (articles []*models.Article, err error) {
+	articles, err = models.GetArticlesByCategoryId(this.CategoryID, this.PageNum, this.PageSize)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -49,8 +60,13 @@ func (this *GetArticleService) GetCountByTagId() (int, error) {
 	return models.GetArticleTotalByTagId(this.TagID)
 }
 
+func (this *GetArticleService) GetCountByCategory() (int, error) {
+	return models.GetArticleTotalByCategory(this.CategoryID)
+}
+
 type AddArticleService struct {
 	TagName     []string `form:"tag_name" json:"tag_name"`
+	Category    string   `form:"categorys" json:"categorys"`
 	Tags        string   `form:"tags" json:"tags"`
 	Title       string   `form:"title" json:"title" binding:"required,min=2,max=30"`
 	Content     string   `form:"content" json:"content" binding:"required,min=2,max=10000"`
@@ -65,11 +81,14 @@ func (this *AddArticleService) AddArticle() error {
 		tagIds = strings.Split(this.Tags, ",")
 	}
 	tags, _ := models.GetTagsByIds(tagIds)
-
+	categoryID, _ := strconv.Atoi(this.Category)
+	fmt.Println("this.Category :", this.Category)
+	fmt.Println("categoryID :", categoryID)
 	//fmt.Println("isPublished :", this.IsPublished)
 	published := "on" == this.IsPublished
 	article := models.Article{
 		//TagID:     this.TagID,
+		CategoryID:  categoryID,
 		Tags:        tags,
 		Title:       this.Title,
 		Content:     this.Content,

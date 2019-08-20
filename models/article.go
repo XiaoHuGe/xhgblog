@@ -8,6 +8,7 @@ import (
 type Article struct {
 	Model
 	Tags        []Tag      `json:"tags" gorm:"many2many:article_tags;"` //table article_tags
+	CategoryID  int        `json:"category_id"`
 	Comments    []*Comment `json:"comments"`
 	Title       string     `json:"title"`
 	Content     string     `json:"content" gorm:"size:10000"`
@@ -48,6 +49,16 @@ func GetArticleTotalByArchive(year, month int) (int, error) {
 	return count, nil
 }
 
+func GetArticleTotalByCategory(CategoryId int) (int, error) {
+	var articles []*Article
+	var count int
+	err := db.Where("category_id = ?", CategoryId).Find(&articles).Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
 func GetArticlesByTagId(tagId, pageNum, pageSize int) ([]*Article, error) {
 	var articles []*Article
 	//err := db.Preload("Tags").Where("DATE_FORMAT(created_at,'%Y-%m') = ?", date).Offset(pageNum).Limit(pageSize).Find(&articles).Error
@@ -57,6 +68,16 @@ func GetArticlesByTagId(tagId, pageNum, pageSize int) ([]*Article, error) {
 		Where("xhgblog_article_tags.tag_id = ?", tagId).
 		Offset(pageNum).Limit(pageSize).Order("created_at desc").
 		Find(&articles).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+	return articles, nil
+}
+
+func GetArticlesByCategoryId(CategoryId, pageNum, pageSize int) ([]*Article, error) {
+	var articles []*Article
+	err := db.Preload("Tags").Preload("Comments").Where("category_id= ?", CategoryId).
+		Offset(pageNum).Limit(pageSize).Find(&articles).Order("created_at desc").Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}

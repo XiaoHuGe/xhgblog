@@ -11,16 +11,11 @@ import (
 	"xhgblog/utils/util"
 )
 
-func ManageArticleHtml(ctx *gin.Context) {
+func GetArticles(ctx *gin.Context) {
 	G := app.Gin{C: ctx}
 	resp := &app.Response{}
-	// 文章名称
-	var tagId = -1
-	//var state = -1
 
 	getArticleService := service.GetArticleService{
-		TagID: tagId,
-		//State:    state,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
@@ -41,7 +36,6 @@ func ManageArticleHtml(ctx *gin.Context) {
 		"posts":  articles,
 		"Active": "posts",
 		"user":   user,
-		//"comments": models.MustListUnreadComment(),
 	})
 }
 
@@ -116,7 +110,7 @@ func GetEditArticleHtml(ctx *gin.Context) {
 		G.Response(http.StatusOK, resp)
 		return
 	}
-	//article.Tags, _ = models.ListTagByPostId(id)  // 获取
+
 	ctx.HTML(http.StatusOK, "post/modify.html", gin.H{
 		"post": article,
 	})

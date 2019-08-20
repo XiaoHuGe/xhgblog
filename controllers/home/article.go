@@ -18,7 +18,7 @@ func GetArticle(ctx *gin.Context) {
 	id := com.StrTo(ctx.Param("id")).MustInt()
 	b, err := service.CheckArticleByID(id)
 	if b == false {
-		resp.Message = "没有此文章" // 无效id
+		resp.Message = "没有此文章"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
@@ -39,16 +39,15 @@ func GetArticle(ctx *gin.Context) {
 	})
 }
 
-func GetArticlesHtml(ctx *gin.Context) {
-	// 文章名称
-	var tagId int = -1
+func GetArticles(ctx *gin.Context) {
+
+	var tagId = -1
 	if arg := ctx.Param("tag_id"); arg != "" {
 		tagId = com.StrTo(arg).MustInt()
 	}
 
 	getArticleService := service.GetArticleService{
-		TagID: tagId,
-		//State:    state,
+		TagID:    tagId,
 		PageNum:  util.GetPage(ctx),
 		PageSize: setting.AppSetting.PageSize,
 	}
@@ -65,9 +64,7 @@ func GetArticlesHtml(ctx *gin.Context) {
 	}
 
 	getTagService := service.GetTagService{
-		TagName:  "",
-		PageNum:  util.GetPage(ctx),
-		PageSize: setting.AppSetting.PageSize,
+		TagName: "",
 	}
 	tags, err := getTagService.GetAll()
 	if err != nil {
@@ -84,12 +81,15 @@ func GetArticlesHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
+	categorys, err := models.GetCategorys()
+
 	user, _ := ctx.Get(setting.SESSION_USER)
 	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
 		"archives":        archives,
+		"categorys":       categorys,
 		"user":            user,
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
@@ -99,8 +99,8 @@ func GetArticlesHtml(ctx *gin.Context) {
 	})
 }
 
-func GetArticlesByTagHtml(ctx *gin.Context) {
-	// 文章名称
+func GetArticlesByTag(ctx *gin.Context) {
+
 	var tagId = -1
 	if arg := ctx.Param("tag_id"); arg != "" {
 		tagId = com.StrTo(arg).MustInt()
@@ -120,9 +120,7 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 	count, _ := getArticleService.GetCountByTagId()
 
 	getTagService := service.GetTagService{
-		TagName:  "",
-		PageNum:  util.GetPage(ctx),
-		PageSize: setting.AppSetting.PageSize,
+		TagName: "",
 	}
 	tags, err := getTagService.GetAll()
 	if err != nil {
@@ -138,12 +136,15 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
+	categorys, err := models.GetCategorys()
+
 	user, _ := ctx.Get(setting.SESSION_USER)
 	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
 		"archives":        archives,
+		"categorys":       categorys,
 		"user":            user,
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,
@@ -153,8 +154,8 @@ func GetArticlesByTagHtml(ctx *gin.Context) {
 	})
 }
 
-func GetArticlesByArchiveHtml(ctx *gin.Context) {
-	// 文章名称
+func GetArticlesByArchive(ctx *gin.Context) {
+
 	var tagId = -1
 	var year int
 	var month int
@@ -181,9 +182,7 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 	count, _ := getArticleService.GetCountByArchive()
 
 	getTagService := service.GetTagService{
-		TagName:  "",
-		PageNum:  util.GetPage(ctx),
-		PageSize: setting.AppSetting.PageSize,
+		TagName: "",
 	}
 	tags, err := getTagService.GetAll()
 	if err != nil {
@@ -199,12 +198,70 @@ func GetArticlesByArchiveHtml(ctx *gin.Context) {
 		totalPage = count/setting.AppSetting.PageSize + 1
 	}
 	archives, err := models.GetArchive()
+	categorys, err := models.GetCategorys()
+
 	user, _ := ctx.Get(setting.SESSION_USER)
 	maxRead, _ := models.GetMaxReadArticles()
 	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
 		"posts":           articles,
 		"tags":            tags,
 		"archives":        archives,
+		"categorys":       categorys,
+		"user":            user,
+		"pageIndex":       pageIndex,
+		"totalPage":       totalPage,
+		"path":            ctx.Request.URL.Path,
+		"maxReadPosts":    maxRead,
+		"maxCommentPosts": "",
+	})
+}
+
+func GetArticlesByCategory(ctx *gin.Context) {
+
+	var CategoryId = -1
+	if arg := ctx.Param("category_id"); arg != "" {
+		CategoryId = com.StrTo(arg).MustInt()
+	}
+
+	getArticleService := service.GetArticleService{
+		CategoryID: CategoryId,
+		PageNum:    util.GetPage(ctx),
+		PageSize:   setting.AppSetting.PageSize,
+	}
+	articles, err := getArticleService.GetArticlesByCategoryId()
+	if err != nil {
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	count, _ := getArticleService.GetCountByCategory()
+
+	getTagService := service.GetTagService{
+		TagName: "",
+	}
+	tags, err := getTagService.GetAll()
+	if err != nil {
+		ctx.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+	pageIndex := com.StrTo(ctx.Query("page")).MustInt()
+	if pageIndex < 1 {
+		pageIndex = 1
+	}
+	totalPage := count / setting.AppSetting.PageSize
+	if count%setting.AppSetting.PageSize > 0 {
+		totalPage = count/setting.AppSetting.PageSize + 1
+	}
+	archives, err := models.GetArchive()
+	categorys, err := models.GetCategorys()
+
+	user, _ := ctx.Get(setting.SESSION_USER)
+	maxRead, _ := models.GetMaxReadArticles()
+	ctx.HTML(http.StatusOK, "index/index.html", gin.H{
+		"posts":           articles,
+		"tags":            tags,
+		"archives":        archives,
+		"categorys":       categorys,
 		"user":            user,
 		"pageIndex":       pageIndex,
 		"totalPage":       totalPage,

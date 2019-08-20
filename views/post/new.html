@@ -105,6 +105,11 @@
                     tags.push($(element).text());
                 });
                 $("#tags").val(tags.join(","));
+                var categorys = new Array();
+                $(".categoryButton .categoryId").each(function(index,element){
+                    categorys.push($(element).text());
+                });
+                $("#categorys").val(categorys.join(","));
                 $("#postForm").submit();
             });
 
@@ -117,6 +122,24 @@
                 success: function (tag) {
 
                     createButton(tag.data.id, tag.data.TagName);
+                },
+                error: function (e) {
+                    console.log(e);
+                },
+                display: function (value, response) {
+                    return false;   //disable this method
+                }
+            });
+
+            $('#addCategory').editable({
+                mode: "inline",
+                type: "text",
+                pk: 10,
+                url: "/admin/category",
+                placeholder: "add a category",
+                success: function (category) {
+
+                    createCategoryButton(category.data.id, category.data.CategoryName);
                 },
                 error: function (e) {
                     console.log(e);
@@ -153,6 +176,18 @@
                     </button>&nbsp;`;
             $("#addTag").before(button);
         }
+
+        function createCategoryButton(categoryId, categoryName) {
+            var button = `<button class="btn btn-default btn-sm categoryButton">
+                    <a href="/category/` + categoryId + `">` + categoryName + `</a>
+                    <a class="removeArticleTag" href="#" onclick="deleteTag(this, `+ categoryId +`);">
+                        <span class="glyphicon glyphicon glyphicon-trash"></span>
+                    </a>
+                    <span class="categoryId" hidden="hidden">` + categoryId + `</span>
+                    </button>&nbsp;`;
+            $("#addCategory").before(button);
+        }
+
     </script>
 
 </head>
@@ -167,15 +202,21 @@
 
         <!-- add a new tag -->
         <span id="tagBug">
-            <span style="border: none" id="addTag" class="glyphicon glyphicon-edit"></span>
-
+            <span style="border: none" id="addTag" class="label label-success">
+                <span style="border: none" class="glyphicon glyphicon-plus-sign"></span> 标签
+            </span>
             <a id="postSave" class="glyphicon glyphicon-saved"
-               style="float: right; padding-left: 15px;"></a>
+               style="float: right; padding-left: 15px;">发布文章</a>
         </span><br/><br/>
-
+        <span id="tagBug">
+                <span style="border: none" id="addCategory" class="label label-warning">
+                     <span style="border: none" class="glyphicon glyphicon-plus-sign"></span> 分类
+                </span>
+        </span><br/><br/>
         <!-- create or update a article -->
         <form action="/admin/new_article" method="post" id="postForm" class="form-group">
             <input id="tags" name="tags" type="hidden">
+            <input id="categorys" name="categorys" type="hidden">
             <input name="title" type="text" class="form-control" placeholder="Title"/><br/>
             <textarea id="demo" name="content"></textarea><br/>
             <div class="bootstrap-switch-small">

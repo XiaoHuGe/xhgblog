@@ -140,50 +140,46 @@
                 <tr th:each="tag : ${article.tags}">
                     {{range $tagkey,$tagvalue:=.tags}}
                         {{if isEven $tagkey}}
-                        <a href="/tag/{{$tagvalue.ID}}" class="btn btn-default btn-sm btn-success" style="margin-bottom: 5px">
+                        <a href="/tag/{{$tagvalue.ID}}" class="btn btn-default btn-xs btn-success" style="margin-bottom: 5px;display: inline-block;">
                             <span></span><span th:text="' ' + ${tag.name}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</span>
                         </a>
                         {{else}}
-                        <a href="/tag/{{$tagvalue.ID}}" class="btn btn-default btn-sm btn-warning" style="margin-bottom: 5px
-">
+                        <a href="/tag/{{$tagvalue.ID}}" class="btn btn-default btn-xs btn-warning" style="margin-bottom: 5px;display: inline-block;">
                             <span></span><span th:text="' ' + ${tag.name}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</span>
                         </a>
                         {{end}}
                     {{end}}
                 </tr><!-- show tags -->
             </div>
-
-            {{/*<!-- Blog Categories Well -->*/}}
-            {{/*<div class="well">*/}}
-                {{/*<h5><span class="glyphicon glyphicon-tag"></span> 文章标签</h5>*/}}
-                {{/*<div class="row">*/}}
-                    {{/*<div class="col-lg-6">*/}}
-                        {{/*<ul class="list-unstyled">*/}}
-                            {{/*{{range $tagkey,$tagvalue:=.tags}}*/}}
-                            {{/*{{if isEven $tagkey}}*/}}
-                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>*/}}
-                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{5}})</a>*/}}
-                            {{/*</li>*/}}
-                            {{/*{{end}}*/}}
-                            {{/*{{end}}*/}}
-                        {{/*</ul>*/}}
-                    {{/*</div>*/}}
-                    {{/*<!-- /.col-lg-6 -->*/}}
-                    {{/*<div class="col-lg-6">*/}}
-                        {{/*<ul class="list-unstyled">*/}}
-                            {{/*{{range $tagkey,$tagvalue:=.tags}}*/}}
-                            {{/*{{if isOdd $tagkey}}*/}}
-                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.Name}}({{$tagvalue.Total}})</a>*/}}
-                            {{/*<li><a href="/tag/{{$tagvalue.ID}}">{{$tagvalue.TagName}}({{$tagvalue.Total}})</a>*/}}
-                            {{/*</li>*/}}
-                            {{/*{{end}}*/}}
-                            {{/*{{end}}*/}}
-                        {{/*</ul>*/}}
-                    {{/*</div>*/}}
-                    {{/*<!-- /.col-lg-6 -->*/}}
-                {{/*</div>*/}}
-                {{/*<!-- /.row -->*/}}
-            {{/*</div>*/}}
+            <!-- Side Category Well -->
+            <div class="well">
+                <h5><span class="glyphicon glyphicon-folder-open"></span> 文章分类</h5>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled">
+                            {{range $categorykey,$categoryvalue:=.categorys}}
+                                {{if isEven $categorykey}}
+                                    <li><a href="/category/{{$categoryvalue.ID}}">{{$categoryvalue.CategoryName}}({{$categoryvalue.Total}})</a>
+                                    </li>
+                                {{end}}
+                            {{end}}
+                        </ul>
+                    </div>
+                    <!-- /.col-lg-6 -->
+                    <div class="col-lg-6">
+                        <ul class="list-unstyled">
+                            {{range $categorykey,$categoryvalue:=.categorys}}
+                                {{if isOdd $categorykey}}
+                                    <li><a href="/category/{{$categoryvalue.ID}}">{{$categoryvalue.CategoryName}}({{$categoryvalue.Total}})</a>
+                                    </li>
+                                {{end}}
+                            {{end}}
+                        </ul>
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+            </div>
 
             <!-- Side Widget Well -->
             <div class="well">
@@ -233,38 +229,6 @@
                 {{end}}
             {{end}}
 
-            {{/*<div class="well">*/}}
-                {{/*<h5><span class="glyphicon glyphicon-comment"></span> 评论最多</h5>*/}}
-                {{/*<div class="row">*/}}
-                    {{/*<div class="col-lg-12">*/}}
-                        {{/*<ul class="list-unstyled">*/}}
-                        {{/*<!-- 虎删除 -->*/}}
-                        {{/*{{range $key,$post:=.maxCommentPosts}}*/}}
-                            {{/*<li><a href="/post/{{$post.ID}}">{{$post.Title}}({{$post.CommentTotal}})</a></li>*/}}
-                        {{/*{{end}}*/}}
-                        {{/*</ul>*/}}
-                    {{/*</div>*/}}
-                    {{/*<!-- /.col-lg-12 -->*/}}
-                {{/*</div>*/}}
-                {{/*<!-- /.row -->*/}}
-            {{/*</div>*/}}
-
-            {{/*<div class="well">*/}}
-                {{/*<h5><span class="glyphicon glyphicon-link"></span> 友情链接</h5>*/}}
-                {{/*<div class="row">*/}}
-                    {{/*<div class="col-lg-12">*/}}
-                        {{/*<ul class="list-unstyled">*/}}
-                            {{/*<!-- 虎删除 -->*/}}
-                            {{/*{{range .links}}*/}}
-                            {{/*<li><a href="/link/{{.ID}}" target="_blank" title="{{.Url}}">{{.Name}}</a>*/}}
-                            {{/*</li>*/}}
-                           {{/*{{end}}*/}}
-                        {{/*</ul>*/}}
-                    {{/*</div>*/}}
-                    {{/*<!-- /.col-lg-6 -->*/}}
-                {{/*</div>*/}}
-                {{/*<!-- /.row -->*/}}
-            {{/*</div>*/}}
             <div class="col-lg-12 col-md-10">
                 <ul class="list-inline text-left">
                     {{/*/static/libs/font-awesome/css/font-awesome.min.css*/}}

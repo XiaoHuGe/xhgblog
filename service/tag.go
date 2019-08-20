@@ -6,9 +6,6 @@ import (
 
 type GetTagService struct {
 	TagName string
-	//State    int
-	PageNum  int
-	PageSize int
 }
 
 func (this *GetTagService) GetAll() ([]*models.Tag, error) {

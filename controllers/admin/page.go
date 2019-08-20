@@ -11,7 +11,7 @@ import (
 	"xhgblog/utils/setting"
 )
 
-func ManagePageHtml(ctx *gin.Context) {
+func GetPages(ctx *gin.Context) {
 	pages, _ := models.GetPages()
 	user, _ := ctx.Get(setting.SESSION_USER)
 	ctx.HTML(http.StatusOK, "admin/page.html", gin.H{

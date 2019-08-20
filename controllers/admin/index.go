@@ -8,7 +8,7 @@ import (
 	"xhgblog/utils/setting"
 )
 
-func GetAdminIndexHtml(ctx *gin.Context) {
+func GetAdminIndex(ctx *gin.Context) {
 	user, _ := ctx.Get(setting.SESSION_USER)
 
 	getArticleService := &service.GetArticleService{}
@@ -20,10 +20,8 @@ func GetAdminIndexHtml(ctx *gin.Context) {
 	fmt.Printf("postCount=%d, tagCount=%d \n", postCount, tagCount)
 
 	ctx.HTML(http.StatusOK, "admin/index.html", gin.H{
-		//"pageCount":    5,
 		"postCount": postCount,
 		"tagCount":  tagCount,
-		//"commentCount": 5,
-		"user": user,
+		"user":      user,
 	})
 }

@@ -15,7 +15,7 @@ func GetAbout(ctx *gin.Context) {
 	pageService := service.PageService{}
 	page, err := pageService.GetPageByTitle("关于")
 	if err != nil {
-		resp.Message = "获取内容失败" // 无效id
+		resp.Message = "获取内容失败"
 		resp.Error = err.Error()
 		G.Response(http.StatusOK, resp)
 		return
@@ -27,4 +27,3 @@ func GetAbout(ctx *gin.Context) {
 		"user": user,
 	})
 }
-
