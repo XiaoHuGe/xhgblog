@@ -31,7 +31,7 @@ func GetCategorys() ([]*Category, error) {
 		categorys []*Category
 		err       error
 	)
-	rows, err := db.Raw("select c.*,count(*) total from xhgblog_category c join xhgblog_article p on p.category_id = c.id group by p.category_id").Rows()
+	rows, err := db.Raw("select c.*,count(*) total from xhgblog_category c join xhgblog_article p on p.category_id = c.id where p.deleted_at IS NULL group by p.category_id").Rows()
 	if err != nil {
 		return nil, err
 	}
