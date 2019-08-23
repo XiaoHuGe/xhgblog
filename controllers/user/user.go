@@ -12,6 +12,7 @@ import (
 	"xhgblog/service"
 	"xhgblog/utils/app"
 	"xhgblog/utils/e"
+	"xhgblog/utils/log"
 	"xhgblog/utils/setting"
 )
 
@@ -152,6 +153,7 @@ func CallbackByAuth(ctx *gin.Context) {
 		fmt.Println(err)
 		return
 	}
+	log.Logrus.Info("github user login, github_login:", userInfo.Login)
 	// 设置session
 	s := sessions.Default(ctx)
 	s.Clear()

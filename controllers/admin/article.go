@@ -1,10 +1,10 @@
 package admin
 
 import (
-	"fmt"
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"xdls/utils/log"
 	"xhgblog/service"
 	"xhgblog/utils/app"
 	"xhgblog/utils/setting"
@@ -28,7 +28,10 @@ func GetArticles(ctx *gin.Context) {
 	}
 	user, exist := ctx.Get(setting.SESSION_USER)
 	if exist != true {
-		fmt.Println("user not exist")
+		log.Logrus.Info("user not exist")
+		resp.Message = "用户不存在"
+		resp.Error = err.Error()
+		G.Response(http.StatusOK, resp)
 		return
 	}
 

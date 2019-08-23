@@ -21,6 +21,7 @@ type Application struct {
 	PageSize        int    `yaml:"PageSize"`
 	JwtSecret       string `yaml:"JwtSecret"`
 	RegisterEnabled bool   `yaml:"RegisterEnabled"`
+	LogPath         string `yaml:"LogPath"`
 }
 
 type Server struct {
